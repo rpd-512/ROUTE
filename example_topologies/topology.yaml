@@ -1,0 +1,65 @@
+nodes:
+  - id: 0
+    pos: [0, 0]
+    energy: 9999
+    type: sink
+  - id: 1
+    pos: [-3, 4]
+    energy: 87
+    type: sensor
+    range: 6.5
+    packets: 9
+    tx_depl: 0.3
+    rx_depl: 0.02
+  - id: 2
+    pos: [5, -2]
+    energy: 55
+    type: sensor
+    range: 4.2
+    packets: 6
+    tx_depl: 0.25
+    rx_depl: 0.03
+  - id: 3
+    pos: [2, -2]
+    energy: 33
+    type: sensor
+    range: 5.0
+    packets: 10
+    tx_depl: 0.2
+    rx_depl: 0.01
+  - id: 4
+    pos: [3, 3]
+    energy: 90
+    type: sensor
+    range: 7.2
+    packets: 5
+    tx_depl: 0.2
+    rx_depl: 0.02
+  - id: 5
+    pos: [14, 1]
+    energy: 48
+    type: sensor
+    range: 7
+    packets: 8
+    tx_depl: 0.18
+    rx_depl: 0.01
+  - id: 6
+    pos: [8.5, -2]
+    energy: 70
+    type: sensor
+    range: 7
+    packets: 11
+    tx_depl: 0.3
+    rx_depl: 0.04
+  - id: 7
+    pos: [0, 5]
+    energy: 25
+    type: sensor
+    range: 6.8
+    packets: 9
+    tx_depl: 0.35
+    rx_depl: 0.03
+  - id: 10
+    pos: [20, 0]
+    energy: 9999
+    type: sink
