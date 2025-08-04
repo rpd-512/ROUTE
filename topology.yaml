@@ -1,0 +1,20 @@
+nodes:
+  - id: 0
+    pos: [0, 0]
+    energy: 9999
+    type: sink
+  - id: 1
+    pos: [2, 1]
+    energy: 100
+    type: sensor
+  - id: 2
+    pos: [4, 1]
+    energy: 100
+    type: sensor
+  - id: 3
+    pos: [6, 0]
+    energy: 100
+    type: sensor
+
+params:
+  range: 3.0
