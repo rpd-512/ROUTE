@@ -7,14 +7,23 @@ nodes:
     pos: [2, 1]
     energy: 100
     type: sensor
+    range: 3.0
+    packets: 10
+    tx_depl: 0.1
+    rx_depl: 0.01
   - id: 2
-    pos: [4, 1]
-    energy: 100
+    pos: [1, -1]
+    energy: 70
     type: sensor
+    range: 7.0
+    packets: 8
+    tx_depl: 0.3
+    rx_depl: 0.05
   - id: 3
-    pos: [6, 0]
-    energy: 100
+    pos: [-1, 3]
+    energy: 80
     type: sensor
-
-params:
-  range: 3.0
+    range: 5.0
+    packets: 12
+    tx_depl: 0.5
+    rx_depl: 0.1
