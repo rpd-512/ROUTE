@@ -11,6 +11,9 @@ PY_INCLUDES := $(shell python3-config --includes)
 PY_LIBS := $(shell python3-config --ldflags) -lpython3.10
 NUMPY_INCLUDE := -I$(shell python3 -c "import numpy; print(numpy.get_include())")
 
+YAML_CFLAGS := $(shell pkg-config --cflags yaml-cpp)
+YAML_LDFLAGS := $(shell pkg-config --libs yaml-cpp)
+
 # Eigen and other global includes
 GLOBAL_INCLUDES = -I/usr/include/eigen3 -I/usr/local/include
 
@@ -21,7 +24,7 @@ $(OUT): $(SRC)
 	$(CXX) $(CXXFLAGS) $(SRC) \
 		$(PY_INCLUDES) $(NUMPY_INCLUDE) $(GLOBAL_INCLUDES) \
 		-o $(OUT) \
-		$(PY_LIBS)
+		$(PY_LIBS) $(YAML_LDFLAGS)
 
 # Debug target
 gdb: $(OUT)
