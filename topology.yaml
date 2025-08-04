@@ -13,7 +13,7 @@ nodes:
     rx_depl: 0.01
   - id: 2
     pos: [1, -1]
-    energy: 70
+    energy: 49
     type: sensor
     range: 7.0
     packets: 8
@@ -21,7 +21,7 @@ nodes:
     rx_depl: 0.05
   - id: 3
     pos: [-1, 3]
-    energy: 80
+    energy: 12
     type: sensor
     range: 5.0
     packets: 12

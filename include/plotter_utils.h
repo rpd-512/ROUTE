@@ -47,10 +47,17 @@ void plotNodes(const vector<Node>& nodes) {
 
         vector<double> x{node.position.x};
         vector<double> y{node.position.y};
-
+        int size = 50; // Size of the marker
         map<string, string> kwargs;
-        plt::scatter(x, y, 50, {{"color", energyToColor(node.energy)}});
-        plotCircle(node.position.x, node.position.y, node.radius);
+        if (node.isSink) {
+            size = 150; // Sink nodes are larger circles
+            kwargs["color"] = "blue";
+            kwargs["marker"] = "s"; // Circle marker for sink nodes
+        } else {
+            kwargs["color"] = energyToColor(node.energy);
+            plotCircle(node.position.x, node.position.y, node.radius);
+        }
+        plt::scatter(x, y, size, kwargs);
     }
 
     plt::title("Node Positions and Energy Levels");

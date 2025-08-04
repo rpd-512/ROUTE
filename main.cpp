@@ -1,19 +1,22 @@
+#include <iostream>
 #include <vector>
 #include "include/types.h"
 #include "include/plotter_utils.h"
+#include "include/io_utils.h"
 
-int main() {
-    std::vector<Node> nodes;
+int main(int argc, char* argv[]) {
+    if (argc < 2) {
+        std::cerr << "Usage: " << argv[0] << " <network.yaml>" << std::endl;
+        return 1;
+    }
 
-    // Push a new Node
-    nodes.push_back(Node(1, {0.0, 0.0}, 15.0, 100.0));
-    nodes.push_back(Node(2, {5.0, 1.0}, 10.0, 55.0));
-    nodes.push_back(Node(3, {4.0, -6.0}, 10.0, 47.0));
-    nodes.push_back(Node(4, {-10.0, 10.0}, 5.0, 20)); // default energy = 100.0
+    std::string filename = argv[1];
+    std::vector<Node> myNetwork = loadNodesFromYAML(filename);
 
-    for (const auto& node : nodes) {
+    for (const auto& node : myNetwork) {
         node.printStatus();
     }
-    plotNodes(nodes);
+
+    plotNodes(myNetwork);
     return 0;
 }

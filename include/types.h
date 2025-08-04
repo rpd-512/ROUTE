@@ -13,14 +13,33 @@ struct Position {
 class Node {
 public:
     int id;
-    Position position; // Coordinates
-    double radius; // Communication radius
-    double energy; // Energy level
+    Position position;
+    double radius;
+    double energy;
     bool isAlive;
+    int packetCount;
+    double txCost;
+    double rxCost;
+    bool isSink = false; // Default to false, can be set later
 
-    Node(int id, Position position, double radius, double energy = 100.0)
-        : id(id), position(position), radius(radius), energy(energy < 0 ? 0 : energy), isAlive(true) {}
-
+    Node(int id,
+         Position position,
+         double radius,
+         double energy = 100.0,
+         int packetCount = 512,
+         double txCost = 1.0,
+         double rxCost = 1.0,
+         bool isSink = false)
+        : id(id),
+          position(position),
+          radius(radius),
+          energy(energy < 0 ? 0 : energy),
+          isAlive(true),
+          packetCount(packetCount),
+          txCost(txCost),
+          rxCost(rxCost),
+          isSink(isSink) {}
+    
     double distanceTo(const Node& other) const {
         double dx = other.position.x - position.x;
         double dy = other.position.y - position.y;
@@ -47,7 +66,13 @@ public:
                   << ", Position: (" << position.x << ", " << position.y << ")"
                   << ", Energy: " << energy
                   << ", Is Alive: " << (isAlive ? "Yes" : "No")
+                  << ", Packets: " << packetCount
+                  << ", TX Cost: " << txCost
+                  << ", RX Cost: " << rxCost
+                  << ", Is Sink: " << (isSink ? "Yes" : "No")
+                  << ", Radius: " << radius
                   << std::endl;
     }
 };
+
 #endif
