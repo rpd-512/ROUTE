@@ -7,23 +7,17 @@ Researchers can quickly test and compare optimization algorithms like GA, PSO, T
 
 ---
 
-## Features
-- **Modular Design** : Plug-and-play architecture allows adding new optimization algorithms with minimal effort.
-
-- **Multi-objective Evaluation** : Optimize routing based on energy, latency, and reliability simultaneously.
-
-- **Lightweight & Fast** : Written in modern C++ with Eigen for efficient matrix math.
-
-- **Configurable Inputs** : Accepts YAML/CSV configuration files for networks, nodes, and energy models.
-
-- **Visualization** : Includes a p5.js frontend for real-time route visualization and performance tracking.
-
-- **Research-Ready** : Designed as a tool for academic experiments, reproducibility, and extensions.
+## 🚀 Features
+- Modular design with a plug-and-play architecture that allows adding new optimization algorithms with minimal effort.  
+- Configurable inputs through `.yaml` files for network topologies.
+- Node configuration specifies position, initial energy, communication range, packet size, and transmission/receiving energy costs.  
+- Visualization support, including convergence graphs and topology plots with matplotlib.  
+- Research-ready, built for academic experiments, reproducibility, and easy extensions.  
 ---
 
-## Build Instructions
+## 🛠️ Build Instructions
 
-### Prerequisites
+### ✅ Prerequisites
 
 Make sure the following dependencies are installed:
 
@@ -61,7 +55,7 @@ rm -rf build/
 
 ---
 
-## YAML Format Example (Topology Data)
+## 📂 YAML Format Example (Topology Data)
 
 ```yaml
 nodes:
@@ -99,7 +93,7 @@ nodes:
 
 ---
 
-## License 
+## 📜 License 
 
 This project is released under the [MIT License](LICENSE).
 
