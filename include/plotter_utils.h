@@ -41,7 +41,7 @@ void plotCircle(double cx, double cy, double radius, const string& color = "blac
     });
 }
 
-void plotNodes(const vector<Node>& nodes) {
+void plotNodes(const Topology& nodes) {
     for (const auto& node : nodes) {
         if (!node.isAlive) continue;
 

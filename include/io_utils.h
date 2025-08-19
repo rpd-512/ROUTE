@@ -4,8 +4,8 @@
 #include <yaml-cpp/yaml.h>
 #include "types.h"
 
-vector<Node> loadNodesFromYAML(const string& filename) {
-    vector<Node> nodes;
+Topology loadNodesFromYAML(const string& filename) {
+    Topology nodes;
     YAML::Node config = YAML::LoadFile(filename);
 
     for (const auto& nodeDef : config["nodes"]) {

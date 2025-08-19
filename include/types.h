@@ -75,4 +75,7 @@ public:
     }
 };
 
+typedef vector<Node> Topology;
+
+
 #endif
