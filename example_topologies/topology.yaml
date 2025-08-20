@@ -3,7 +3,7 @@ nodes:
     pos: [0, 0]
     energy: 9999
     type: sink
-  - id: 1
+  - id: 4
     pos: [-3, 4]
     energy: 87
     type: sensor
@@ -11,7 +11,7 @@ nodes:
     packets: 9
     tx_depl: 0.3
     rx_depl: 0.02
-  - id: 2
+  - id: 26
     pos: [5, -2]
     energy: 55
     type: sensor
@@ -19,7 +19,7 @@ nodes:
     packets: 6
     tx_depl: 0.25
     rx_depl: 0.03
-  - id: 3
+  - id: 2
     pos: [2, -2]
     energy: 33
     type: sensor
@@ -27,7 +27,7 @@ nodes:
     packets: 10
     tx_depl: 0.2
     rx_depl: 0.01
-  - id: 4
+  - id: 8
     pos: [3, 3]
     energy: 90
     type: sensor
@@ -35,7 +35,7 @@ nodes:
     packets: 5
     tx_depl: 0.2
     rx_depl: 0.02
-  - id: 5
+  - id: 9
     pos: [14, 1]
     energy: 48
     type: sensor
@@ -43,7 +43,7 @@ nodes:
     packets: 8
     tx_depl: 0.18
     rx_depl: 0.01
-  - id: 6
+  - id: 64
     pos: [8.5, -2]
     energy: 70
     type: sensor
@@ -51,7 +51,7 @@ nodes:
     packets: 11
     tx_depl: 0.3
     rx_depl: 0.04
-  - id: 7
+  - id: 72
     pos: [0, 5]
     energy: 25
     type: sensor

@@ -41,8 +41,8 @@ void plotCircle(double cx, double cy, double radius, const string& color = "blac
     });
 }
 
-void plotNodes(const Topology& nodes) {
-    for (const auto& node : nodes) {
+void plotNodes(const Topology& network) {
+    for (const auto& node : network.node_list) {
         if (!node.isAlive) continue;
 
         vector<double> x{node.position.x};
@@ -65,7 +65,7 @@ void plotNodes(const Topology& nodes) {
     plt::ylabel("Y Position");
     plt::axis("equal");
     double minX = 1e9, maxX = -1e9, minY = 1e9, maxY = -1e9;
-    for (const auto& node : nodes) {
+    for (const auto& node : network.node_list) {
         if (!node.isAlive) continue;
         minX = min(minX, node.position.x);
         maxX = max(maxX, node.position.x);

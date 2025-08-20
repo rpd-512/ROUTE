@@ -12,7 +12,7 @@ struct Position {
 
 class Node {
 public:
-    int id;
+    unsigned int id;
     Position position;
     double radius;
     double energy;
@@ -75,7 +75,13 @@ public:
     }
 };
 
-typedef vector<Node> Topology;
+typedef struct{
+    vector<Node> node_list; // List of nodes in the network
+    vector<vector<int>> adjacency_matrix; // Adjacency matrix for the network
+    vector<int> indexing; // Maps node ID to its index in the node_list
+    unsigned int num_nodes; // Total number of nodes in the network
+    unsigned int num_sinks; // Total number of sink nodes in the network
+} Topology;
 
 
 #endif

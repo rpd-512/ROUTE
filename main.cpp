@@ -15,6 +15,22 @@ int main(int argc, char* argv[]) {
     std::string filename = argv[1];
     Topology myNetwork = loadNodesFromYAML(filename);
 
+    cout << "\nINDEX\tID\tType" << endl;
+    for(size_t i=0;i<myNetwork.indexing.size();i++) {
+        cout << i << "\t" << myNetwork.indexing[i] << "\t";
+        if(i < myNetwork.num_sinks) {
+            cout << "Sink";
+        } else {
+            cout << "Node";
+        }
+        cout << endl;
+    }
+    cout << endl;
+
+    for(size_t i=0;i<myNetwork.node_list.size();i++) {
+        myNetwork.node_list[i].printStatus();
+    }
+
     //plotNodes(myNetwork);
 
     //Next hop encoding
@@ -25,15 +41,14 @@ int main(int argc, char* argv[]) {
     //      Keeping Node Deaths to zero
     //      Pushing throughput to one
 
-    // implement hashmap for node id to index mapping
     // chromosome size is not number of nodes, but number of nodes - sinks
 
     int populationSize = 10;
-    //int iterations = 100;
+    int iterations = 100;
 
     vector<vector<int>> population = initial_population(populationSize, myNetwork);
-    cout << "Initial Population:" << endl;
-    print_2D_vector(population);
+    //cout << "Initial Population:" << endl;
+    //print_2D_vector(population);
 
     return 0;
 }

@@ -18,9 +18,9 @@ double uniform(double low, double high) {
     return dist(gen);
 }
 
-vector<vector<int>> initial_population(int size, Topology& nodes) {
+vector<vector<int>> initial_population(int size, Topology& network) {
     vector<int> sink_ids;
-    for (const auto& node : nodes) {
+    for (const auto& node : network.node_list) {
         if (node.isSink) {
             sink_ids.push_back(node.id);
         }
@@ -31,16 +31,16 @@ vector<vector<int>> initial_population(int size, Topology& nodes) {
 
     vector<vector<int>> population;
     for (int i = 0; i < size; i++) {
-        vector<int> chrm(nodes.size());
+        vector<int> chrm(network.node_list.size());
 
         // Ensure at least one sink is present
-        size_t sink_pos = randint(0, nodes.size() - 1);
+        size_t sink_pos = randint(0, network.node_list.size() - 1);
         chrm[sink_pos] = sink_ids[randint(0, sink_ids.size() - 1)];
 
         // Fill the rest randomly
-        for (size_t j = 0; j < nodes.size(); j++) {
+        for (size_t j = 0; j < network.node_list.size(); j++) {
             if (j == sink_pos) continue; // already assigned sink
-            chrm[j] = randint(0, nodes.size() - 1);
+            chrm[j] = randint(0, network.node_list.size() - 1);
         }
 
         population.push_back(chrm);
