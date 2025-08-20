@@ -75,13 +75,26 @@ public:
     }
 };
 
-typedef struct{
+class Topology {
+public:
     vector<Node> node_list; // List of nodes in the network
     vector<vector<int>> adjacency_matrix; // Adjacency matrix for the network
     vector<int> indexing; // Maps node ID to its index in the node_list
     unsigned int num_nodes; // Total number of nodes in the network
     unsigned int num_sinks; // Total number of sink nodes in the network
-} Topology;
+    Topology() : num_nodes(0), num_sinks(0) {}
+    
+    void generate_adjacency_matrix() {
+        adjacency_matrix.resize(node_list.size(), vector<int>(node_list.size(), 0));
+        for (size_t i = 0; i < node_list.size(); ++i) {
+            for (size_t j = 0; j < node_list.size(); ++j) {
+                if (i != j && node_list[i].isInRange(node_list[j])) {
+                    adjacency_matrix[i][j] = 1; // Mark as connected
+                }
+            }
+        }
+    }
+};
 
 
 #endif

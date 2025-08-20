@@ -51,6 +51,14 @@ nodes:
     packets: 11
     tx_depl: 0.3
     rx_depl: 0.04
+  - id: 641
+    pos: [9.5, -2]
+    energy: 70
+    type: sensor
+    range: 7
+    packets: 11
+    tx_depl: 0.3
+    rx_depl: 0.04
   - id: 72
     pos: [0, 5]
     energy: 25
@@ -61,5 +69,9 @@ nodes:
     rx_depl: 0.03
   - id: 10
     pos: [20, 0]
+    energy: 9999
+    type: sink
+  - id: 101
+    pos: [22, 2]
     energy: 9999
     type: sink

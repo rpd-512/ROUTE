@@ -30,8 +30,10 @@ int main(int argc, char* argv[]) {
     for(size_t i=0;i<myNetwork.node_list.size();i++) {
         myNetwork.node_list[i].printStatus();
     }
-
-    //plotNodes(myNetwork);
+    cout << endl;
+    myNetwork.generate_adjacency_matrix();
+    cout << "Adjacency Matrix:" << endl;
+    print_2D_vector(myNetwork.adjacency_matrix);
 
     //Next hop encoding
     
@@ -47,8 +49,10 @@ int main(int argc, char* argv[]) {
     int iterations = 100;
 
     vector<vector<int>> population = initial_population(populationSize, myNetwork);
-    //cout << "Initial Population:" << endl;
-    //print_2D_vector(population);
+    cout << "Initial Population:" << endl;
+    print_2D_vector(population);
+
+    plotNodes(myNetwork);
 
     return 0;
 }

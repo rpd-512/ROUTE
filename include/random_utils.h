@@ -18,32 +18,21 @@ double uniform(double low, double high) {
     return dist(gen);
 }
 
-vector<vector<int>> initial_population(int size, Topology& network) {
-    vector<int> sink_ids;
-    for (const auto& node : network.node_list) {
-        if (node.isSink) {
-            sink_ids.push_back(node.id);
+vector<vector<int>> initial_population(int population_size, Topology& network) {
+    vector<vector<int>> population(population_size, vector<int>(network.num_nodes, 0));
+    // Each chromosome should have a size of num_nodes
+    // Each chromosome should have atleast one sink node
+    for (int i = 0; i < population_size; ++i) {
+        // Randomly select a sink node to be the first node in the chromosome
+        int sink_index = randint(0, network.num_sinks - 1);
+        int assign_sink = randint(0, network.num_nodes - 1);
+        population[i][assign_sink] = sink_index;
+        // Fill the rest of the chromosome with random node indices
+        for (int j = 0; j < network.num_nodes; ++j) {
+            if (j != assign_sink) {
+                population[i][j] = randint(0, network.node_list.size() - 1);
+            }
         }
-    }
-    if (sink_ids.empty()) {
-        throw runtime_error("No sink nodes found in the topology.");
-    }
-
-    vector<vector<int>> population;
-    for (int i = 0; i < size; i++) {
-        vector<int> chrm(network.node_list.size());
-
-        // Ensure at least one sink is present
-        size_t sink_pos = randint(0, network.node_list.size() - 1);
-        chrm[sink_pos] = sink_ids[randint(0, sink_ids.size() - 1)];
-
-        // Fill the rest randomly
-        for (size_t j = 0; j < network.node_list.size(); j++) {
-            if (j == sink_pos) continue; // already assigned sink
-            chrm[j] = randint(0, network.node_list.size() - 1);
-        }
-
-        population.push_back(chrm);
     }
     return population;
 }

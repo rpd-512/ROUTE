@@ -54,7 +54,7 @@ Topology loadNodesFromYAML(const string& filename) {
         network.indexing[i + network.num_sinks] = node_ids[i];
         network.node_list.push_back(node_list[i]);
     }
-    network.adjacency_matrix.resize(network.num_nodes, vector<int>(network.num_nodes, 0));
+    network.adjacency_matrix.resize(network.node_list.size(), vector<int>(network.node_list.size(), 0));
     return network;
 }
 
