@@ -35,6 +35,8 @@ int main(int argc, char* argv[]) {
 
     myNetwork.generate_adjacency_matrix();
     
+    myNetwork.print_environment_data();
+
     // Fitness Functions to be implemented:
     //      Minimizing Latency
     //      Minimizing Energy Usage
@@ -46,7 +48,7 @@ int main(int argc, char* argv[]) {
     int iterations = 100;
 
     vector<vector<int>> population = initial_population(populationSize, myNetwork);
-    cout << "Initial Population:" << endl;
+    //cout << "Initial Population:" << endl;
     //print_2D_vector(population);
 
     //plotNodes(myNetwork);

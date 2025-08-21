@@ -12,14 +12,15 @@ struct Position {
 
 class Node {
 public:
-    unsigned int id;
-    Position position;
-    double radius;
-    double energy;
-    bool isAlive;
-    int packetCount;
-    double txCost;
-    double rxCost;
+    unsigned int id; // Unique identifier for the node read from YAML file
+    unsigned int index; // Index in the network's node_list
+    Position position; // Position of the node in 2D space
+    double radius; // Communication range of the node
+    double energy; // Current energy level of the node
+    bool isAlive; // Status of the node (alive or dead)
+    unsigned int packetCount; // Number of packets the node has to send
+    double txCost; // Transmission cost per packet
+    double rxCost; // Reception cost per packet
     bool isSink = false; // Default to false, can be set later
 
     Node(int id,
@@ -63,24 +64,27 @@ public:
     }
     void printStatus() const {
         std::cout << "Node ID: " << id
-                  << ", Position: (" << position.x << ", " << position.y << ")"
-                  << ", Energy: " << energy
-                  << ", Is Alive: " << (isAlive ? "Yes" : "No")
-                  << ", Packets: " << packetCount
-                  << ", TX Cost: " << txCost
-                  << ", RX Cost: " << rxCost
-                  << ", Is Sink: " << (isSink ? "Yes" : "No")
-                  << ", Radius: " << radius
+                  << "\n\t- Index   : " << index
+                  << "\n\t- Position: (" << position.x << ", " << position.y << ")"
+                  << "\n\t- Energy  : " << energy
+                  << "\n\t- Is Alive: " << (isAlive ? "Yes" : "No")
+                  << "\n\t- Packets : " << packetCount
+                  << "\n\t- TX Cost : " << txCost
+                  << "\n\t- RX Cost : " << rxCost
+                  << "\n\t- Is Sink : " << (isSink ? "Yes" : "No")
+                  << "\n\t- Radius  : " << radius
                   << std::endl;
     }
 };
 
 class Topology {
 public:
-    vector<Node> node_list; // List of nodes in the network
+    unsigned int total_packet_count;
+    double propagation_speed;
+    vector<Node> node_list; // List of nodes in the network in order of index
     vector<vector<int>> adjacency_matrix; // Adjacency matrix for the network
     vector<int> indexing; // Maps node ID to its index in the node_list
-    unsigned int num_nodes; // Total number of nodes in the network
+    unsigned int num_nodes; // Total number of non-sink nodes in the network
     unsigned int num_sinks; // Total number of sink nodes in the network
     Topology() : num_nodes(0), num_sinks(0) {}
     
@@ -93,6 +97,17 @@ public:
                 }
             }
         }
+    }
+
+    void print_network() const {
+        for(const auto& node : node_list) {
+            node.printStatus();
+        }
+    }
+
+    void print_environment_data() const{
+        cout << "Propogation Speed : " << propagation_speed << endl;
+        cout << "Total Packet Count: " << total_packet_count << endl;
     }
 };
 

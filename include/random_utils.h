@@ -24,11 +24,11 @@ vector<vector<int>> initial_population(int population_size, Topology& network) {
     // Each chromosome should have atleast one sink node
     for (int i = 0; i < population_size; ++i) {
         // Randomly select a sink node to be the first node in the chromosome
-        int sink_index = randint(0, network.num_sinks - 1);
-        int assign_sink = randint(0, network.num_nodes - 1);
+        unsigned int sink_index = randint(0, network.num_sinks - 1);
+        unsigned int assign_sink = randint(0, network.num_nodes - 1);
         population[i][assign_sink] = sink_index;
         // Fill the rest of the chromosome with random node indices
-        for (int j = 0; j < network.num_nodes; ++j) {
+        for (size_t j = 0; j < network.num_nodes; ++j) {
             if (j != assign_sink) {
                 population[i][j] = randint(0, network.node_list.size() - 1);
             }

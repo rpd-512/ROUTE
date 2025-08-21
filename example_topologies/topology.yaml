@@ -75,3 +75,6 @@ nodes:
     pos: [22, 2]
     energy: 9999
     type: sink
+
+environment:
+  - propagation_speed: 1

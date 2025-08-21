@@ -15,6 +15,9 @@ Topology loadNodesFromYAML(const string& filename) {
     vector<Node> node_list;
     vector<Node> sink_list;
     
+    auto env_data = config["environment"][0];
+    network.propagation_speed = env_data["propagation_speed"].as<double>();
+
     for (const auto& nodeDef : config["nodes"]) {
         int id = nodeDef["id"].as<int>();
         auto posList = nodeDef["pos"];
@@ -31,7 +34,8 @@ Topology loadNodesFromYAML(const string& filename) {
             node_ids.push_back(id);
         }
         double radius = isSink ? 9999.0 : nodeDef["range"] ? nodeDef["range"].as<double>() : 0.0;
-        int packets = nodeDef["packets"] ? nodeDef["packets"].as<int>() : 0;
+        unsigned int packets = nodeDef["packets"] ? nodeDef["packets"].as<int>() : 0;
+        network.total_packet_count += packets;
         double tx_depl = nodeDef["tx_depl"] ? nodeDef["tx_depl"].as<double>() : 0.0;
         double rx_depl = nodeDef["rx_depl"] ? nodeDef["rx_depl"].as<double>() : 0.0;
 
@@ -48,13 +52,15 @@ Topology loadNodesFromYAML(const string& filename) {
     network.indexing = vector<int>(network.num_nodes + network.num_sinks);
     for(size_t i = 0; i < network.num_sinks; i++) {
         network.indexing[i] = sink_ids[i];
+        sink_list[i].index = i; // Set the index for the sink node
         network.node_list.push_back(sink_list[i]);
     }
     for(size_t i = 0; i < network.num_nodes; i++) {
         network.indexing[i + network.num_sinks] = node_ids[i];
+        node_list[i].index = i + network.num_sinks; // Set the index for the regular node
         network.node_list.push_back(node_list[i]);
     }
-    network.adjacency_matrix.resize(network.node_list.size(), vector<int>(network.node_list.size(), 0));
+
     return network;
 }
 
