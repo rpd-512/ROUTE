@@ -79,7 +79,7 @@ public:
 
 class Topology {
 public:
-    unsigned int total_packet_count;
+    unsigned int total_packet_count = 0;
     double propagation_speed;
     vector<Node> node_list; // List of nodes in the network in order of index
     vector<vector<int>> adjacency_matrix; // Adjacency matrix for the network

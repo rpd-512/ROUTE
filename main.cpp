@@ -28,28 +28,21 @@ int main(int argc, char* argv[]) {
 
     cout << "Route Optimization Using Tunable Evolution" << endl;
 
-    std::string filename = argv[1];
+    string filename = argv[1];
     Topology myNetwork = loadNodesFromYAML(filename);
 
-    myNetwork.print_network();
+    //myNetwork.print_network();
 
-    myNetwork.generate_adjacency_matrix();
+    //myNetwork.generate_adjacency_matrix();
     
-    myNetwork.print_environment_data();
-
-    // Fitness Functions to be implemented:
-    //      Minimizing Latency
-    //      Minimizing Energy Usage
-    //      Maximizing Throughput
-
-    // chromosome must have no cycles
+    //myNetwork.print_environment_data();
 
     int populationSize = 10;
     int iterations = 100;
 
     vector<vector<int>> population = initial_population(populationSize, myNetwork);
-    //cout << "Initial Population:" << endl;
-    //print_2D_vector(population);
+    cout << "Initial Population:" << endl;
+    print_2D_vector(population);
 
     //plotNodes(myNetwork);
 

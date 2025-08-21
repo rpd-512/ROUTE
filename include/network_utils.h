@@ -3,13 +3,25 @@
 
 #include "types.h"
 
-// Add function to check for cycles in a chromosome
 bool hasCycle(const vector<int>& chromosome, const Topology& network) {
-    // Implement cycle detection logic here
-    // This could be done using a depth-first search (DFS) or union-find algorithm
-    // For now, we will return false as a placeholder
+    int n = network.num_nodes;
+
+    for (int start = 0; start < n; ++start) {
+        vector<bool> visited(n, false);
+        int current = start;
+
+        while (true) {
+            if (current < 0 || current >= n) break;  // invalid hop
+            if (network.node_list[current].isSink) break; // reached sink, no cycle
+            if (visited[current]) return true; // cycle detected
+
+            visited[current] = true;
+            current = chromosome[current]; // follow next hop
+        }
+    }
     return false;
 }
+
 // Function to calculate latency
 double calculateLatency(const vector<int>& chromosome, const Topology& network) {
     double latency = 0.0;
