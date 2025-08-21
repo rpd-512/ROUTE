@@ -6,53 +6,50 @@
 
 #include "include/debug_utils.h"
 
+void clear_screen() {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+
 int main(int argc, char* argv[]) {
     if (argc < 2) {
         std::cerr << "Usage: " << argv[0] << " <network.yaml>" << std::endl;
         return 1;
     }
+    clear_screen();
+    cout << " ____   ___  _   _ _____ _____ " << endl;
+    cout << "|  _ \\ / _ \\| | | |_   _| ____|" << endl;
+    cout << "| |_) | | | | | | | | | |  _|  " << endl;
+    cout << "|  _ <| |_| | |_| | | | | |___ " << endl;
+    cout << "|_| \\_\\\\___/ \\___/  |_| |_____|" << endl;
+
+    cout << "Route Optimization Using Tunable Evolution" << endl;
 
     std::string filename = argv[1];
     Topology myNetwork = loadNodesFromYAML(filename);
 
-    cout << "\nINDEX\tID\tType" << endl;
-    for(size_t i=0;i<myNetwork.indexing.size();i++) {
-        cout << i << "\t" << myNetwork.indexing[i] << "\t";
-        if(i < myNetwork.num_sinks) {
-            cout << "Sink";
-        } else {
-            cout << "Node";
-        }
-        cout << endl;
-    }
-    cout << endl;
+    myNetwork.print_network();
 
-    for(size_t i=0;i<myNetwork.node_list.size();i++) {
-        myNetwork.node_list[i].printStatus();
-    }
-    cout << endl;
     myNetwork.generate_adjacency_matrix();
-    cout << "Adjacency Matrix:" << endl;
-    print_2D_vector(myNetwork.adjacency_matrix);
-
-    //Next hop encoding
     
     // Fitness Functions to be implemented:
     //      Minimizing Latency
     //      Minimizing Energy Usage
-    //      Keeping Node Deaths to zero
-    //      Pushing throughput to one
+    //      Maximizing Throughput
 
-    // chromosome size is not number of nodes, but number of nodes - sinks
+    // chromosome must have no cycles
 
     int populationSize = 10;
     int iterations = 100;
 
     vector<vector<int>> population = initial_population(populationSize, myNetwork);
     cout << "Initial Population:" << endl;
-    print_2D_vector(population);
+    //print_2D_vector(population);
 
-    plotNodes(myNetwork);
+    //plotNodes(myNetwork);
 
     return 0;
 }
