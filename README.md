@@ -1,7 +1,8 @@
 # ROUTE: Route Optimization Using Tunable Evolution
 
-![ROUTE Logo](images/logo.png)
-
+<p align="center">
+  <img src="images/logo.png" alt="ROUTE Logo" width="300"/>
+</p>
 
 ROUTE is a lightweight and modular simulator designed to explore routing in wireless sensor networks (WSNs) using evolutionary and swarm algorithms.
 It provides a C++ backend for fast simulation of energy, latency, and reliability metrics.
