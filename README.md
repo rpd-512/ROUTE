@@ -69,7 +69,8 @@ nodes:
     pos: [0, 0]
     energy: 9999
     type: sink
-  - id: 1
+    bandwidth: 5
+  - id: 4
     pos: [-3, 4]
     energy: 87
     type: sensor
@@ -77,14 +78,19 @@ nodes:
     packets: 9
     tx_depl: 0.3
     rx_depl: 0.02
-  - id: 2
-    pos: [5, -2]
+    bandwidth: 1
+  - id: 26
+    pos: [9, -2]
     energy: 55
     type: sensor
-    range: 4.2
-    packets: 6
+    range: 7
+    packets: 60
     tx_depl: 0.25
     rx_depl: 0.03
+    bandwidth: 1
+
+environment:
+  - propagation_speed: 1
 ```
 
 ---
