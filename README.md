@@ -5,9 +5,11 @@
 </p>
 
 ROUTE is a lightweight and modular simulator designed to explore routing in wireless sensor networks (WSNs) using evolutionary and swarm algorithms.
-It provides a C++ backend for fast simulation of energy, latency, and reliability metrics.
+It provides a C++ backend for fast simulation of energy, latency, and reliability metrics, along with a TUI (Text-based User Interface) for intuitive experiment setup, monitoring, and result visualization.
 
-Researchers can quickly test and compare optimization algorithms like GA, PSO, TLBO, or plug in their own custom metaheuristics.
+The simulator is specifically built to optimize latency and energy consumption, enabling researchers to quickly test and compare optimization algorithms like GA, PSO, TLBO, or plug in their own custom metaheuristics.
+
+Work is in progress to enable basic scripting support, allowing users to simulate and optimize workflows more flexibly.
 
 ---
 
@@ -27,12 +29,12 @@ Make sure the following dependencies are installed:
 
 #### Fedora:
 ```bash
-sudo dnf install eigen3-devel yaml-cpp-devel
+sudo dnf install readline-devel yaml-cpp-devel
 ```
 
 #### Ubuntu:
 ```bash
-sudo apt install libeigen3-dev libyaml-cpp-dev
+sudo apt install libreadline-dev libyaml-cpp-dev
 ```
 
 ---
