@@ -107,13 +107,6 @@ double calculateEnergyUsage(const vector<int>& chromosome, Topology network) {
     return total_energy_used;
 }
 
-
-double calculateThroughput(const vector<int>& chromosome, const Topology& network) {
-    double throughput = 0.0;
-    // Implement throughput calculation based on the chromosome and network topology
-    return throughput;
-}
-
 bool validate_network_range(const vector<int>& chromosome, const Topology& network) {
     for(size_t i=0; i<chromosome.size();i++){
         int next_hop = chromosome[i];
@@ -124,10 +117,9 @@ bool validate_network_range(const vector<int>& chromosome, const Topology& netwo
     return true;
 }
 
-double calculateFitness(const vector<int>& chromosome, Topology& network) {
+double fitness(const vector<int>& chromosome, Topology& network) {
     constexpr double c1 = 1.0;
     constexpr double c2 = 1.0;
-    constexpr double c3 = 1.0;
 
     if(!validate_network_range(chromosome, network) || hasCycle(chromosome, network)){
         return DBL_MAX;
@@ -135,9 +127,9 @@ double calculateFitness(const vector<int>& chromosome, Topology& network) {
 
     double energyUsage = calculateEnergyUsage(chromosome, network);
     double latency     = calculateLatency(chromosome, network);
-    double throughput  = calculateThroughput(chromosome, network);
 
-    return c1 * energyUsage + c2 * latency - c3 * throughput;
+    //minimise
+    return c1 * energyUsage + c2 * latency;
 }
 
 #endif
