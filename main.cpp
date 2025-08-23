@@ -3,6 +3,7 @@
 #include "include/types.h"
 #include "include/plotter_utils.h"
 #include "include/io_utils.h"
+#include "include/interface_utils.h"
 
 #include "include/debug_utils.h"
 
@@ -16,7 +17,7 @@ void clear_screen() {
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        std::cerr << "Usage: " << argv[0] << " <network.yaml>" << std::endl;
+        cerr << "Usage: " << argv[0] << " <network.yaml>" << endl;
         return 1;
     }
 
@@ -25,30 +26,35 @@ int main(int argc, char* argv[]) {
     
 
     clear_screen();
- 
-    cout << " ____   ___  _   _ _____ _____ " << endl;
-    cout << "|  _ \\ / _ \\| | | |_   _| ____|" << endl;
-    cout << "| |_) | | | | | | | | | |  _|  " << endl;
-    cout << "|  _ <| |_| | |_| | | | | |___ " << endl;
-    cout << "|_| \\_\\\\___/ \\___/  |_| |_____|" << endl;
-
-    cout << "Route Optimization Using Tunable Evolution" << endl;
+    
+    show_start();
 
     int populationSize = 10;
     int iterations = 10;
 
-    vector<vector<int>> population = initial_population(populationSize, myNetwork);
-    cout << "Initial Population:" << endl;
-    print_2D_vector(population);
-    cout << endl;
-    for(auto chromo: population){
-        print_vector(chromo);
-        cout << "Latency: " << calculateLatency(chromo,myNetwork) << endl;
-        cout << "Energy : " << calculateEnergyUsage(chromo,myNetwork) << endl;
-        cout << "Fitness: " << fitness(chromo,myNetwork) << endl << endl;
-        plotConfig(chromo, myNetwork);
+    //vector<vector<int>> population = initial_population(populationSize, myNetwork);
+    //cout << "Initial Population:" << endl;
+    //print_2D_vector(population);
+    //cout << endl;
+    //for(auto chromo: population){
+    //    print_vector(chromo);
+    //    cout << "Latency: " << calculateLatency(chromo,myNetwork) << endl;
+    //    cout << "Energy : " << calculateEnergyUsage(chromo,myNetwork) << endl;
+    //    cout << "Fitness: " << fitness(chromo,myNetwork) << endl << endl;
+    //    plotConfig(chromo, myNetwork);
+    //}
+
+    rl_attempted_completion_function = completer;
+
+    char* input;
+    while ((input = readline("(ROUTE)~$ ")) != nullptr) {
+        if (*input) add_history(input);
+
+        string cmd = trim(input);
+        free(input);
+        if(cmd == "clear") clear_screen();
+        if(cmd == "exit") break;
+        if(cmd == "route") show_start();
     }
-
-
     return 0;
 }

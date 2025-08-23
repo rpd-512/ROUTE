@@ -6,81 +6,117 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 #include <algorithm>
+#include <cstring>
+#include "types.h"
 
-// Top-level commands
-std::vector<std::string> top_level_cmds = {"help", "exit", "load", "run", "stats", "export"};
+// -------------------------
+// Command hierarchy
+// -------------------------
 
-// Subcommands for "load"
-std::vector<std::string> load_subcmds = {"config", "dataset", "topology"};
+static const map<string, vector<string>> command_tree = {
+    {"", {"help","exit","clear","load","save","list","set","simulate","export","plot","generate","compare","route"}},
+    {"load", {"topology","config","algorithm"}},
+    {"save", {"config","topology"}},
+    {"list", {"algorithms","nodes"}},
+    {"set", {"population","iteration","c_latency","c_energy"}},
+    {"plot", {"topology","network"}},
+    {"generate", {"population","topology"}},
+};
 
-// Trim helper (to ignore spaces)
-std::string trim(const std::string& s) {
-    size_t start = s.find_first_not_of(" \t\n\r");
-    size_t end = s.find_last_not_of(" \t\n\r");
-    return (start == std::string::npos) ? "" : s.substr(start, end - start + 1);
+// -------------------------
+// Helpers
+// -------------------------
+
+void show_start(){
+    cout << " ____   ___  _   _ _____ _____ " << endl;
+    cout << "|  _ \\ / _ \\| | | |_   _| ____|" << endl;
+    cout << "| |_) | | | | | | | | | |  _|  " << endl;
+    cout << "|  _ <| |_| | |_| | | | | |___ " << endl;
+    cout << "|_| \\_\\\\___/ \\___/  |_| |_____|" << endl;
+
+    cout << "Route Optimization Using Tunable Evolution" << endl << endl;
 }
 
-char* dupstr(const std::string& s) {
+inline string trim(const string& s) {
+    size_t start = s.find_first_not_of(" \t\n\r");
+    if (start == string::npos) return "";
+    size_t end = s.find_last_not_of(" \t\n\r");
+    return s.substr(start, end - start + 1);
+}
+
+inline vector<string> split(const string& s) {
+    vector<string> tokens;
+    size_t start = 0, end;
+    while ((end = s.find(' ', start)) != string::npos) {
+        tokens.emplace_back(s.substr(start, end - start));
+        start = end + 1;
+    }
+    if (start < s.size()) tokens.emplace_back(s.substr(start));
+    return tokens;
+}
+
+inline char* dupstr(const string& s) {
     char* r = (char*)malloc(s.size() + 1);
     strcpy(r, s.c_str());
     return r;
 }
 
-// Custom completion function
-char** completer(const char* text, int start, int end) {
+inline vector<string> generate_matches(const vector<string>& options, const char* text) {
+    vector<string> matches;
+    string_view prefix(text ? text : "");
+    for (const auto& opt : options) {
+        if (prefix.empty() || opt.find(prefix) == 0)
+            matches.push_back(opt);
+    }
+    sort(matches.begin(), matches.end());
+    return matches;
+}
+
+inline string build_key(const vector<string>& tokens, size_t end) {
+    if (tokens.empty() || end == 0) return tokens[0];
+    string key = tokens[0];
+    for (size_t i = 1; i < end; ++i)
+        key += "." + tokens[i];
+    return key;
+}
+
+// -------------------------
+// Readline completion
+// -------------------------
+
+static vector<string> last_matches;
+
+inline char* generator(const char* text, int state) {
+    return (state < last_matches.size()) ? dupstr(last_matches[state]) : nullptr;
+}
+
+inline char** completer(const char* text, int start, int end) {
     rl_attempted_completion_over = 1;
 
-    std::string buf(rl_line_buffer);
-    std::string trimmed = trim(buf);
+    string buf(rl_line_buffer ? rl_line_buffer : "");
+    string trimmed = trim(buf);
+    vector<string> tokens = split(trimmed);
 
-    std::vector<std::string> matches;
+    // Determine token index at cursor
+    size_t token_index = 0;
+    size_t pos = 0;
+    for (; token_index < tokens.size() && pos + tokens[token_index].size() < start; ++token_index)
+        pos += tokens[token_index].size() + 1;
 
-    // If this is the first word → suggest top-level commands
-    if (start == 0) {
-        for (auto& cmd : top_level_cmds) {
-            if (cmd.find(text) == 0) matches.push_back(cmd);
-        }
-    }
-    // If first word is "load" → suggest subcommands
-    else {
-        std::string first = trimmed.substr(0, trimmed.find(" "));
-        if (first == "load") {
-            for (auto& sub : load_subcmds) {
-                if (sub.find(text) == 0) matches.push_back(sub);
-            }
-        }
-    }
+    string key = (token_index == 0) ? "" : build_key(tokens, token_index);
 
-    if (matches.empty()) return nullptr;
+    // Select options
+    vector<string> options;
+    if (key.empty())
+        options = command_tree.at("");
+    else if (command_tree.count(key))
+        options = command_tree.at(key);
 
-    // Convert to readline format
-    char** completions = (char**)malloc((matches.size() + 1) * sizeof(char*));
-    for (size_t i = 0; i < matches.size(); i++) {
-        completions[i] = dupstr(matches[i]);
-    }
-    completions[matches.size()] = nullptr;
-    return completions;
+    last_matches = generate_matches(options, text);
+
+    return last_matches.empty() ? nullptr : rl_completion_matches(text, generator);
 }
 
-/*
-int main() {
-    rl_attempted_completion_function = completer;
-
-    char* input;
-    while ((input = readline("(ROUTE)~$ ")) != nullptr) {
-        if (*input) add_history(input);
-
-        std::string cmd = trim(input);
-        free(input);
-
-        if (cmd == "exit") break;
-        else if (cmd == "help") std::cout << "Available: help, init, run, stats, export, load\n";
-        else if (cmd.rfind("load", 0) == 0) std::cout << "Loading: " << cmd << "\n";
-        else std::cout << "You typed: " << cmd << "\n";
-    }
-    return 0;
-}
-    */
-
-#endif //
+#endif // INTERFACE_UTILS
