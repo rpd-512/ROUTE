@@ -38,8 +38,8 @@ Topology loadNodesFromYAML(const string& filename) {
         network.total_packet_count += packets;
         double tx_depl = nodeDef["tx_depl"] ? nodeDef["tx_depl"].as<double>() : 0.0;
         double rx_depl = nodeDef["rx_depl"] ? nodeDef["rx_depl"].as<double>() : 0.0;
-
-        Node node(id, pos, radius, energy, packets, tx_depl, rx_depl, isSink);
+        double bandwidth = nodeDef["bandwidth"].as<double>();
+        Node node(id, pos, radius, energy, packets, tx_depl, rx_depl, isSink, bandwidth);
         if (isSink) {
             sink_list.push_back(node);
         } else {
@@ -59,6 +59,10 @@ Topology loadNodesFromYAML(const string& filename) {
         network.indexing[i + network.num_sinks] = sink_ids[i];
         sink_list[i].index = i + network.num_nodes; // Set the index for the sink node
         network.node_list.push_back(sink_list[i]);
+    }
+    network.generate_adjacency_matrix();
+    if (network.isolated_node_cycles()) {
+        throw std::runtime_error("Invalid topology: contains an isolated cycle of nodes not ranging to any sink");
     }
 
     return network;

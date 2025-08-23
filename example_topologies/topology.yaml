@@ -3,6 +3,7 @@ nodes:
     pos: [0, 0]
     energy: 9999
     type: sink
+    bandwidth: 5   # 5 Mbps
   - id: 4
     pos: [-3, 4]
     energy: 87
@@ -11,30 +12,16 @@ nodes:
     packets: 9
     tx_depl: 0.3
     rx_depl: 0.02
+    bandwidth: 1   # 1 Mbps
   - id: 26
-    pos: [5, -2]
+    pos: [9, -2]
     energy: 55
     type: sensor
-    range: 4.2
-    packets: 6
+    range: 7
+    packets: 60
     tx_depl: 0.25
     rx_depl: 0.03
-  - id: 2
-    pos: [2, -2]
-    energy: 33
-    type: sensor
-    range: 5.0
-    packets: 10
-    tx_depl: 0.2
-    rx_depl: 0.01
-  - id: 8
-    pos: [3, 3]
-    energy: 90
-    type: sensor
-    range: 7.2
-    packets: 5
-    tx_depl: 0.2
-    rx_depl: 0.02
+    bandwidth: 1
   - id: 9
     pos: [14, 1]
     energy: 48
@@ -43,22 +30,16 @@ nodes:
     packets: 8
     tx_depl: 0.18
     rx_depl: 0.01
-  - id: 64
-    pos: [8.5, -2]
-    energy: 70
+    bandwidth: 2
+  - id: 9
+    pos: [-10, 10]
+    energy: 78
     type: sensor
-    range: 7
-    packets: 11
-    tx_depl: 0.3
-    rx_depl: 0.04
-  - id: 641
-    pos: [9.5, -2]
-    energy: 70
-    type: sensor
-    range: 7
-    packets: 11
-    tx_depl: 0.3
-    rx_depl: 0.04
+    range: 13
+    packets: 8
+    tx_depl: 0.18
+    rx_depl: 0.01
+    bandwidth: 2
   - id: 72
     pos: [0, 5]
     energy: 25
@@ -66,15 +47,18 @@ nodes:
     range: 6.8
     packets: 9
     tx_depl: 0.35
-    rx_depl: 0.03
+    rx_depl: .20
+    bandwidth: 0.5
   - id: 10
     pos: [20, 0]
     energy: 9999
     type: sink
+    bandwidth: 10
   - id: 101
     pos: [22, 2]
     energy: 9999
     type: sink
+    bandwidth: 10
 
 environment:
   - propagation_speed: 1
