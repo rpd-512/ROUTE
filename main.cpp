@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <set>
 #include "include/types.h"
 #include "include/plotter_utils.h"
 #include "include/io_utils.h"
@@ -7,42 +8,20 @@
 
 #include "include/debug_utils.h"
 
-void clear_screen() {
-    #ifdef _WIN32
-        (void)system("cls");
-    #else
-        (void)system("clear");
-    #endif
-}
+#include "metaheuristics/geneticAlgorithm.h"
 
 int main(int argc, char* argv[]) {
-    if (argc < 2) {
-        cerr << "Usage: " << argv[0] << " <network.yaml>" << endl;
-        return 1;
-    }
+    Topology myNetwork;
+    SimulationData simulator;
 
-    string filename = argv[1];
-    Topology myNetwork = loadNodesFromYAML(filename);
-    
+    simulator.iteration_count = 1000;
+    simulator.population_size = 100;
+    simulator.c_energy = 1.0;
+    simulator.c_latency = 1.0;
+
 
     clear_screen();
-    
     show_start();
-
-    int populationSize = 10;
-    int iterations = 10;
-
-    //vector<vector<int>> population = initial_population(populationSize, myNetwork);
-    //cout << "Initial Population:" << endl;
-    //print_2D_vector(population);
-    //cout << endl;
-    //for(auto chromo: population){
-    //    print_vector(chromo);
-    //    cout << "Latency: " << calculateLatency(chromo,myNetwork) << endl;
-    //    cout << "Energy : " << calculateEnergyUsage(chromo,myNetwork) << endl;
-    //    cout << "Fitness: " << fitness(chromo,myNetwork) << endl << endl;
-    //    plotConfig(chromo, myNetwork);
-    //}
 
     rl_attempted_completion_function = completer;
 
@@ -50,11 +29,7 @@ int main(int argc, char* argv[]) {
     while ((input = readline("(ROUTE)~$ ")) != nullptr) {
         if (*input) add_history(input);
 
-        string cmd = trim(input);
-        free(input);
-        if(cmd == "clear") clear_screen();
-        if(cmd == "exit") break;
-        if(cmd == "route") show_start();
+        execute_command(input, myNetwork, simulator);
     }
     return 0;
 }

@@ -93,7 +93,7 @@ void plotConfig(const vector<int>& chromosome, const Topology& network){
             kwargs["marker"] = "s"; // Circle marker for sink nodes
         } else {
             kwargs["color"] = energyToColor(node.energy);
-            plotCircle(node.position.x, node.position.y, node.radius, false);
+            //plotCircle(node.position.x, node.position.y, node.radius, false);
         }
         plt::scatter(x, y, size, kwargs);
     }
@@ -125,6 +125,36 @@ void plotConfig(const vector<int>& chromosome, const Topology& network){
     plt::xlim(minX - 10, maxX + 10);
     plt::ylim(minY - 10, maxY + 10);
 
+    plt::show();
+}
+
+void plotFitness(const PlotterData& data) {
+    plt::figure();
+    plt::plot(data.fitness_history, {{"label", "Fitness"}, {"color", data.color}});
+    plt::xlabel("Iteration");
+    plt::ylabel("Value");
+    plt::title(data.name+" Convergence");
+    plt::legend();
+    plt::show();
+}
+
+void plotLatency(const PlotterData& data) {
+    plt::figure();
+    plt::plot(data.latency_history, {{"label", "Latency"}, {"color", data.color}});
+    plt::xlabel("Iteration");
+    plt::ylabel("Value");
+    plt::title(data.name+" Convergence");
+    plt::legend();
+    plt::show();
+}
+
+void plotEnergy(const PlotterData& data) {
+    plt::figure();
+    plt::plot(data.energy_history, {{"label", "Energy"}, {"color", data.color}});
+    plt::xlabel("Iteration");
+    plt::ylabel("Value");
+    plt::title(data.name+" Convergence");
+    plt::legend();
     plt::show();
 }
 

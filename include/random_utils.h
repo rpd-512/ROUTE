@@ -7,6 +7,7 @@
 
 #include "network_utils.h"
 #include "debug_utils.h"
+
 random_device rd;  // Seed the random number engine
 mt19937 gen(rd()); // Standard mersenne_twister_engine
 
@@ -20,7 +21,8 @@ double uniform(double low, double high) {
     return dist(gen);
 }
 
-vector<vector<int>> initial_population(int population_size, Topology& network) {
+vector<vector<int>> initial_population(SimulationData& simulator, Topology& network) {
+    int population_size = simulator.population_size;
     vector<vector<int>> population;
     // Each chromosome should have a size of num_nodes
     // Each chromosome should have atleast one sink node

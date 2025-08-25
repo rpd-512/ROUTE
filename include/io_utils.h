@@ -56,7 +56,7 @@ Topology loadNodesFromYAML(const string& filename) {
         network.node_list.push_back(node_list[i]);
     }
     for(size_t i = 0; i < network.num_sinks; i++) {
-        network.indexing[i + network.num_sinks] = sink_ids[i];
+        network.indexing[i + network.num_nodes] = sink_ids[i];
         sink_list[i].index = i + network.num_nodes; // Set the index for the sink node
         network.node_list.push_back(sink_list[i]);
     }

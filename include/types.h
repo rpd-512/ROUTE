@@ -3,12 +3,39 @@
 
 #include <cmath>
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
-struct Position {
+typedef struct Position {
     double x, y;
-};
+} Position;
+
+typedef struct ChromoInfo{
+    double fitness;
+    vector <int> gene;
+} chromoInfo;
+
+typedef struct PlotterData{
+    string name;
+    double best_fitness;
+    double best_latency;
+    double best_energy;
+    vector<int> best_gene;
+    vector <float> fitness_history;
+    vector <float> latency_history;
+    vector <float> energy_history;
+    string color = "blue";
+} PlotterData;
+
+typedef struct SimulationData{
+    double c_energy;
+    double c_latency;
+    int population_size;
+    int iteration_count;
+    vector<vector<int>> population;
+} SimulationData;
+
 
 class Node {
 public:
@@ -120,7 +147,7 @@ public:
         cout << "Total Packet Count: " << total_packet_count << endl;
     }
 
-    vector<int> get_reachable_nodes(int source_index) {
+    vector<int> get_reachable_nodes(size_t source_index) {
         vector<int> reachable_nodes;
 
         if (source_index >= adjacency_matrix.size()) {
@@ -136,7 +163,7 @@ public:
         return reachable_nodes;
     }
 
-    vector<int> get_incoming_nodes(int target_index) {
+    vector<int> get_incoming_nodes(size_t target_index) {
         vector<int> incoming_nodes;
 
         if (target_index >= adjacency_matrix.size()) {
@@ -190,11 +217,42 @@ public:
 
         return false;
     }
-    
+
     void reset_network(){
         for(Node &n: node_list){
             n.reset();
         }
+    }
+
+    void save_network(const std::string& filename) const {
+        ofstream file(filename);
+        if (!file.is_open()) {
+            cerr << "Error: Could not open file for writing: " << filename << endl;
+            return;
+        }
+
+        // Save node information
+        file << "nodes:" << endl;
+        for (const auto& node : node_list) {
+            file << "  - id: " << node.id << endl;
+            file << "    pos: [" << node.position.x << ", " << node.position.y << "]" << endl;
+            file << "    energy: " << node.energy << endl;
+            file << "    type: " << (node.isSink ? "sink" : "sensor") << endl;
+            if (!node.isSink) {
+                file << "    range: " << node.radius << endl;
+                file << "    packets: " << node.packet_size << endl;
+                file << "    tx_depl: " << node.txCost << endl;
+                file << "    rx_depl: " << node.rxCost << endl;
+            }
+            file << "    bandwidth: " << node.bandwidth << endl;
+        }
+
+        // Save environment information
+        file << "environment:" << endl;
+        file << "  - propagation_speed: " << propagation_speed << endl;
+
+        file.close();
+        cout << "Network saved to: " << filename << endl;
     }
 };
 
