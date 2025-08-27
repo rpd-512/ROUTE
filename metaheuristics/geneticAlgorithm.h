@@ -25,6 +25,7 @@ public:
         this->population_size = simulator.population_size;
         this->iteration_count = simulator.iteration_count;
         this->population = simulator.population;
+        this->plotData.hash_id = random_string(5);
         this->plotData.name = "Genetic Algorithm";
         this->plotData.best_fitness = FLT_MAX;
         this->plotData.best_gene = vector<int>(network.num_nodes, -1);
@@ -116,7 +117,19 @@ public:
             }
             popData.insert(popData.end(),eliteData.begin(),eliteData.end());
         }
-        //plotData.best_gene = population[0];
+        indicators::show_console_cursor(true);
+        plot_container.push_back(plotData);
+        cout << "\nBest Fitness: " << plotData.best_fitness << endl;
+        cout << "Best Gene: ";
+        print_vector(plotData.best_gene);
+        cout << "Best Latency: " << plotData.best_latency << endl;
+        cout << "Best Energy: " << plotData.best_energy << endl;
+        if(return_history){
+            cout << "Fitness History and other data stored. Use 'plot convergence' commands to visualize." << endl;
+        }
+        else{
+            cout << "Fitness History and other data not stored. To store, set return_history to true." << endl;
+        }
     }
     void plot_convergence() {
         cout << "Best Fitness: " << plotData.best_fitness << endl;

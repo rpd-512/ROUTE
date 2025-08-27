@@ -28,7 +28,7 @@ void plotCircle(double cx, double cy, double radius, bool line_flag = true) {
         x.push_back(cx + radius * cos(theta));
         y.push_back(cy + radius * sin(theta));
     }
-    plt::plot(x, y, {{"color", color}});
+    plt::plot(x, y, {{"color", color},{"linewidth","0.125"}});
 
     if(line_flag){
         double angle = randint(0,2) * 2*M_PI / 3; // Random angle for the radius line
@@ -40,7 +40,8 @@ void plotCircle(double cx, double cy, double radius, bool line_flag = true) {
 
         plt::plot(line_x, line_y, {
             {"color", color},
-            {"linestyle", "--"}
+            {"linestyle", "--"},
+            {"linewidth", "0.5"}
         });
     }
 }
@@ -118,7 +119,8 @@ void plotConfig(const vector<int>& chromosome, const Topology& network){
 
         plt::plot(line_x, line_y, {
             {"color", "black"},
-            {"linestyle", "-"}
+            {"linestyle", "-"},
+            {"linewidth", "0.5"}
         });
     }
 

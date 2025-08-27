@@ -42,6 +42,7 @@ double calculateLatency(const vector<int>& chromosome, const Topology& network) 
         held_packets[i]= network.node_list[i].packet_size;
     }
     while(sink_packets != total_packets){
+        //cout << "Latency Calc" << endl;
         for (size_t i = 0; i < chromosome.size(); i++) {
             int src = i;
             int dst = chromosome[i];
@@ -79,6 +80,7 @@ double calculateEnergyUsage(const vector<int>& chromosome, Topology network) {
     }
 
     while (sink_packets != total_packets) {
+        //cout << "Energy Calc" << endl;
         for (size_t i = 0; i < chromosome.size(); i++) {
             int src = i;
             int dst = chromosome[i];
@@ -94,7 +96,7 @@ double calculateEnergyUsage(const vector<int>& chromosome, Topology network) {
             double tx_energy = held_packets[src] * source.txCost;
             double rx_energy = 0;
             if(!target.isSink){
-                rx_energy = held_packets[src] * target.rxCost * distance*distance/100; // e.g. receiver overhead
+                rx_energy = held_packets[src] * target.rxCost * distance*distance/10; // e.g. receiver overhead
             }
             source.depleteEnergy(tx_energy);
             target.depleteEnergy(rx_energy);
@@ -135,6 +137,7 @@ double fitness(const vector<int>& chromosome, Topology& network, SimulationData 
     double energyUsage = calculateEnergyUsage(chromosome, network);
     double latency     = calculateLatency(chromosome, network);
 
+    network.reset_network();
     //minimise
     return c1 * energyUsage + c2 * latency;
 }

@@ -12,7 +12,11 @@ random_device rd;  // Seed the random number engine
 mt19937 gen(rd()); // Standard mersenne_twister_engine
 
 int randint(int low, int high) {
-    uniform_int_distribution<> dist(low, high);
+    if (high < low) {
+        throw std::invalid_argument("randint called with invalid range: [" +
+            std::to_string(low) + ", " + std::to_string(high) + "]");
+    }
+    std::uniform_int_distribution<> dist(low, high);
     return dist(gen);
 }
 
@@ -55,6 +59,16 @@ vector<vector<int>> initial_population(SimulationData& simulator, Topology& netw
         }
     }
     return population;
+}
+
+string random_string(size_t length) {
+    const string CHARACTERS = "0123456789abcdefghijklmnopqrstuvwxyz";
+    uniform_int_distribution<> dist(0, CHARACTERS.size() - 1);
+    string result;
+    for (size_t i = 0; i < length; ++i) {
+        result += CHARACTERS[dist(gen)];
+    }
+    return result;
 }
 
 

@@ -23,6 +23,8 @@ int main(int argc, char* argv[]) {
     clear_screen();
     show_start();
 
+    //random_string(8)
+
     rl_attempted_completion_function = completer;
 
     char* input;

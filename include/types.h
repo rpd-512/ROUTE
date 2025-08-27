@@ -17,6 +17,7 @@ typedef struct ChromoInfo{
 } chromoInfo;
 
 typedef struct PlotterData{
+    string hash_id;
     string name;
     double best_fitness;
     double best_latency;
@@ -256,5 +257,23 @@ public:
     }
 };
 
+vector<string> list_hashes(const vector<PlotterData>& plots) {
+    vector<string> hashes;
+    for (const auto& plot : plots) {
+        hashes.push_back(plot.hash_id);
+    }
+    return hashes;
+}
+
+PlotterData* get_plot_by_hash(const vector<PlotterData>& plots, const string& hash_id) {
+    for (const auto& plot : plots) {
+        if (plot.hash_id == hash_id) {
+            return new PlotterData(plot);
+        }
+    }
+    return nullptr; // Not found
+}
+
+vector<PlotterData> plot_container;
 
 #endif

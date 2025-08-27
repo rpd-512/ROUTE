@@ -211,7 +211,10 @@ inline char** completer(const char* text, int start, int end) {
         string typed = text ? text : "";
         options = list_dir(typed, ".toml"); // dynamic listing for compare subcommands
     }
-
+    else if(!key.empty() && key == "plot.network"){
+        string typed = text ? text : "";
+        options = list_hashes(plot_container); // dynamic listing for compare subcommands
+    }
     last_matches = generate_matches(options, text);
 
     return last_matches.empty() ? nullptr : rl_completion_matches(text, generator);
@@ -246,6 +249,13 @@ void execute_command(char* input, Topology& network, SimulationData& simulator){
             return;
         }
         plotNodes(network);
+    }
+    else if (cmd_key.find("plot.network") != string::npos){
+        if(tokens.size() < 3 || trim(tokens[2]) == ""){
+            cout << "Usage: plot network <hash_id>" << endl;
+            return;
+        }
+        plotConfig(get_plot_by_hash(plot_container, trim(tokens[2]))->best_gene,network);
     }
 
     else if (cmd_key == "show.population") cout << "Population Size: " << simulator.population_size << endl;
@@ -351,14 +361,12 @@ void execute_command(char* input, Topology& network, SimulationData& simulator){
             cout << "Please set valid population and iteration counts before simulating" << endl;
             return;
         }
-        if(simulator.population.size() != simulator.population_size){
+        if((int)simulator.population.size() != simulator.population_size){
             cout << "Population size mismatch, regenerating population" << endl;
             simulator.population = initial_population(simulator, network);
         }
         GeneticAlgorithm ga(simulator, network);
-        ga.plot_convergence();
     }
-    
     else if (cmd_key == "about") {
         cout << "Route Optimization Using Tunable Evolution (ROUTE)" << endl;
         cout << "Version 0.1" << endl;
