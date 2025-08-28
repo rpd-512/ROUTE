@@ -1,7 +1,7 @@
 # ROUTE: Route Optimization Using Tunable Evolution
 
 <p align="center">
-  <img src="images/logo.png" alt="ROUTE Logo" width="300"/>
+  <img src="assets/logo.png" alt="ROUTE Logo" width="300"/>
 </p>
 
 ROUTE is a lightweight and modular simulator designed to explore routing in wireless sensor networks (WSNs) using evolutionary and swarm algorithms.
@@ -104,6 +104,23 @@ environment:
 - `network.yaml`: YAML file containing topology data for the sensors
 
 ---
+
+📖 Documentation
+
+Detailed documentation for ROUTE is provided in the PDF below. It covers:
+
+Overview of the simulator’s architecture and design principles.
+
+Supported commands, configuration parameters, and YAML file formats.
+
+Step-by-step usage guide with examples.
+
+Integration instructions for adding custom optimization algorithms.
+
+Visualization and result interpretation.
+
+<embed src="assets/ROUTE_Documentation.pdf" type="application/pdf" width="100%" height="600px" />
+
 
 ## 📜 License 
 
