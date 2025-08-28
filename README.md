@@ -105,21 +105,16 @@ environment:
 
 ---
 
-📖 Documentation
+## 📖 Documentation  
 
-Detailed documentation for ROUTE is provided in the PDF below. It covers:
+Full documentation is available in the [ROUTE_Documentation.pdf](assets/ROUTE_Documentation.pdf).  
 
-Overview of the simulator’s architecture and design principles.
-
-Supported commands, configuration parameters, and YAML file formats.
-
-Step-by-step usage guide with examples.
-
-Integration instructions for adding custom optimization algorithms.
-
-Visualization and result interpretation.
-
-<embed src="assets/ROUTE_Documentation.pdf" type="application/pdf" width="100%" height="600px" />
+It covers:  
+- Overview of the simulator’s architecture and design principles.  
+- Supported commands, configuration parameters, and YAML file formats.  
+- Step-by-step usage guide with examples.  
+- Integration instructions for adding custom optimization algorithms.  
+- Visualization and result interpretation.  
 
 
 ## 📜 License 
