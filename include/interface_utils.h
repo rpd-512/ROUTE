@@ -57,10 +57,10 @@ static const map<string, vector<string>> command_tree = {
     {"", {"help","exit","clear","load","save","list","set","show","simulate","export","plot","generate","compare","route","about"}},
     {"load", {"topology","config","algorithm"}},
     {"save", {"config","topology","convergence"}},
-    {"list", {"algorithms","nodes"}},
+    {"list", {"algorithms","nodes","configs"}},
     {"set", {"population","iteration","c_latency","c_energy"}},
     {"show", {"population","iteration","c_latency","c_energy"}},
-    {"plot", {"topology","network","convergence"}},
+    {"plot", {"topology","config","convergence"}},
     {"generate", {"population","topology"}},
 };
 
@@ -96,6 +96,7 @@ void show_help() {
     cout << "list         - List available items\n";
     cout << "  algorithms - List available algorithms\n";
     cout << "  nodes      - List nodes in network\n";
+    cout << "  configs    - List simulated configurations\n";
 
     cout << "set          - Set simulation parameters\n";
     cout << "  population - Set population size\n";
@@ -109,7 +110,7 @@ void show_help() {
 
     cout << "plot         - Plot simulation data\n";
     cout << "  topology   - Plot network topology\n";
-    cout << "  network    - Plot network data\n";
+    cout << "  config     - Plot network configuration\n";
     cout << "  convergence- Plot convergence graph\n";
 
     cout << "generate     - Generate population or topology\n";
@@ -211,7 +212,7 @@ inline char** completer(const char* text, int start, int end) {
         string typed = text ? text : "";
         options = list_dir(typed, ".toml"); // dynamic listing for compare subcommands
     }
-    else if(!key.empty() && key == "plot.network"){
+    else if(!key.empty() && key == "plot.config"){
         string typed = text ? text : "";
         options = list_hashes(plot_container); // dynamic listing for compare subcommands
     }
@@ -250,9 +251,9 @@ void execute_command(char* input, Topology& network, SimulationData& simulator){
         }
         plotNodes(network);
     }
-    else if (cmd_key.find("plot.network") != string::npos){
+    else if (cmd_key.find("plot.config") != string::npos){
         if(tokens.size() < 3 || trim(tokens[2]) == ""){
-            cout << "Usage: plot network <hash_id>" << endl;
+            cout << "Usage: plot config <hash_id>" << endl;
             return;
         }
         plotConfig(get_plot_by_hash(plot_container, trim(tokens[2]))->best_gene,network);
