@@ -117,9 +117,11 @@ It covers:
 - Visualization and result interpretation.  
 
 
-## 📜 License 
+## 📜 License
 
-This project is released under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
+
+© 2025 Rhiddhi Prasad Das. Attribution is required: any use, modification, or redistribution of this software must retain the original copyright notice and license terms.
 
 ---
 
