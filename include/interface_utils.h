@@ -81,48 +81,57 @@ void show_start(){
 }
 
 void show_help() {
-    cout << "\nAvailable commands:\n";
+    cout << "\nAvailable commands:\n\n";
 
-    cout << "load         - Load topology, config, or algorithm\n";
-    cout << "  topology   - Load a network topology file\n";
-    cout << "  config     - Load a configuration file\n";
-    cout << "  algorithm  - Load an algorithm module\n";
+    cout << "load                    - Load resources\n";
+    cout << "  topology              - Load a network topology file\n";
+    cout << "  config                - Load a configuration file        (NOT IMPLEMENTED)\n";
+    cout << "  algorithm             - Load an algorithm module\n";
+    cout << "\n";
 
-    cout << "save         - Save config, topology, or convergence hash\n";
-    cout << "  config     - Save current configuration\n";
-    cout << "  topology   - Save current network topology\n";
-    cout << "  convergence- Save current convergence hash\n";
+    cout << "save                    - Save resources\n";
+    cout << "  config                - Save current configuration       (NOT IMPLEMENTED)\n";
+    cout << "  topology              - Save current network topology\n";
+    cout << "  convergence           - Save current convergence hash  .png(NOT IMPLEMENTED)\n";
+    cout << "\n";
 
-    cout << "list         - List available items\n";
-    cout << "  algorithms - List available algorithms\n";
-    cout << "  nodes      - List nodes in network\n";
-    cout << "  configs    - List simulated configurations\n";
+    cout << "list                    - List available items\n";
+    cout << "  algorithms            - List available algorithms        (NOT IMPLEMENTED)\n";
+    cout << "  nodes                 - List nodes in network\n";
+    cout << "  configs               - List simulated configurations\n";
+    cout << "\n";
 
-    cout << "set          - Set simulation parameters\n";
-    cout << "  population - Set population size\n";
-    cout << "  iteration  - Set number of iterations\n";
-    cout << "  c_latency  - Set latency weight\n";
-    cout << "  c_energy   - Set energy weight\n";
+    cout << "set                     - Set simulation parameters\n";
+    cout << "  population            - Set population size\n";
+    cout << "  iteration             - Set number of iterations\n";
+    cout << "  c_latency             - Set latency weight\n";
+    cout << "  c_energy              - Set energy weight\n";
+    cout << "\n";
 
-    cout << "simulate     - Run simulation with given count\n";
+    cout << "simulate                - Run simulation\n";
+    cout << "\n";
 
-    cout << "export       - Export statistics to a file\n";
+    cout << "export                  - Export statistics to a file      (NOT IMPLEMENTED)\n";
+    cout << "\n";
 
-    cout << "plot         - Plot simulation data\n";
-    cout << "  topology   - Plot network topology\n";
-    cout << "  config     - Plot network configuration\n";
-    cout << "  convergence- Plot convergence graph\n";
+    cout << "plot                    - Plot simulation data\n";
+    cout << "  topology              - Plot network topology\n";
+    cout << "  config                - Plot network configuration\n";
+    cout << "  convergence           - Plot convergence graph           (NOT IMPLEMENTED)\n";
+    cout << "\n";
 
-    cout << "generate     - Generate population or topology\n";
-    cout << "  population - Generate new population\n";
-    cout << "  topology   - Generate new topology\n";
+    cout << "generate                - Generate items\n";
+    cout << "  population            - Generate a new population\n";
+    cout << "  topology              - Generate a new topology\n";
+    cout << "\n";
 
-    cout << "compare      - Compare two configuration files\n";
+    cout << "compare                 - Compare two configuration files (NOT IMPLEMENTED)\n";
+    cout << "\n";
 
-    cout << "help         - Show this help message\n";
-    cout << "route        - Show route optimization info\n";
-    cout << "exit         - Exit the program\n";
-    cout << "clear        - Clear the screen\n\n";
+    cout << "help                    - Show this help message\n";
+    cout << "route                   - Show route optimization banner\n";
+    cout << "exit                    - Exit the program\n";
+    cout << "clear                   - Clear the screen\n\n";
 }
 
 
@@ -208,11 +217,32 @@ inline char** completer(const char* text, int start, int end) {
         string typed = text ? text : "";
         options = list_dir(typed, ".yaml");
     }
+    else if (!key.empty() && key == "load.algorithm") {
+        string typed = text ? text : "";
+        options = list_dir(typed, ".so");
+        options = list_dir(typed, ".dll");
+    }
     else if (!key.empty() && (key.find("compare.") != string::npos || key == "compare") && tokens.size() < 4) {
         string typed = text ? text : "";
         options = list_dir(typed, ".toml"); // dynamic listing for compare subcommands
     }
     else if(!key.empty() && key == "plot.config"){
+        string typed = text ? text : "";
+        options = list_hashes(plot_container); // dynamic listing for compare subcommands
+    }
+    else if(!key.empty() && key == "plot.convergence"){
+        string typed = text ? text : "";
+        options = list_hashes(plot_container); // dynamic listing for compare subcommands
+    }
+    else if(!key.empty() && key == "save.convergence"){
+        string typed = text ? text : "";
+        options = list_hashes(plot_container); // dynamic listing for compare subcommands
+    }
+    else if (!key.empty() && (key.find("save.convergence.") != string::npos || key == "compare") && tokens.size() < 4) {
+        string typed = text ? text : "";
+        options = list_dir(typed, ".png");
+    }
+    else if(!key.empty() && key == "save.config"){
         string typed = text ? text : "";
         options = list_hashes(plot_container); // dynamic listing for compare subcommands
     }
@@ -257,6 +287,13 @@ void execute_command(char* input, Topology& network, SimulationData& simulator){
             return;
         }
         plotConfig(get_plot_by_hash(plot_container, trim(tokens[2]))->best_gene,network);
+    }
+    else if (cmd_key.find("plot.convergence") != string::npos){
+        if(tokens.size() < 3 || trim(tokens[2]) == ""){
+            cout << "Usage: plot convergence <hash_id>" << endl;
+            return;
+        }
+        plotFitness(*get_plot_by_hash(plot_container, trim(tokens[2])));
     }
 
     else if (cmd_key == "show.population") cout << "Population Size: " << simulator.population_size << endl;
@@ -315,10 +352,30 @@ void execute_command(char* input, Topology& network, SimulationData& simulator){
             cout << "Usage: set " << tokens[1] << " <path>" << endl;
         }
     }
-    else if (cmd_key.find("load.topology") != string::npos){
+
+    else if (cmd_key.find("load.topology") != string::npos) {
         cout << "Loading topology from " << tokens[2] << endl;
-        network = loadNodesFromYAML(tokens[2]);
+        try {
+            network = loadNodesFromYAML(tokens[2]);
+        }
+        catch (const exception& e) {
+            cerr << "Error loading topology: " << e.what() << endl;
+            cerr << "Please load a valid YAML file" << endl;
+        }
     }
+
+    else if (cmd_key.find("load.algorithm") != string::npos) {
+        cout << "Loading algorithm from " << tokens[2] << endl;
+        try {
+            //algorithm = loadAlgorithmFromFile(tokens[2]);
+            loadAlgorithmFromFile(tokens[2]);
+        }
+        catch (const exception& e) {
+            cerr << "Error loading algorithm: " << e.what() << endl;
+            cerr << "Please load a valid <extiontion> file" << endl;
+        }
+    }
+
 
     else if (cmd_key.find("generate") != string::npos && tokens.size() < 2) {
         if (find(command_tree.at("generate").begin(), command_tree.at("generate").end(), tokens[1]) == command_tree.at("generate").end()){
@@ -366,7 +423,8 @@ void execute_command(char* input, Topology& network, SimulationData& simulator){
             cout << "Population size mismatch, regenerating population" << endl;
             simulator.population = initial_population(simulator, network);
         }
-        GeneticAlgorithm ga(simulator, network);
+        algorithm.loadData(simulator, network);
+        algorithm.run();
     }
     else if (cmd_key == "about") {
         cout << "Route Optimization Using Tunable Evolution (ROUTE)" << endl;
