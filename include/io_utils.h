@@ -2,9 +2,15 @@
 #define IO_UTILS_H
 
 #include <yaml-cpp/yaml.h>
+#include <dlfcn.h>
+
 #include "types.h"
 
 #include "debug_utils.h"
+#include "../metaheuristics/geneticAlgorithm.h"
+
+
+GeneticAlgorithm algorithm;
 
 Topology loadNodesFromYAML(const string& filename) {
     Topology network;
@@ -66,6 +72,12 @@ Topology loadNodesFromYAML(const string& filename) {
     }
 
     return network;
+}
+
+void loadAlgorithmFromFile(const string& filename) {
+    // Placeholder for algorithm loading logic
+    // This function should load and initialize the algorithm from the specified file
+    cout << "Algorithm loading from file is not yet implemented." << endl;
 }
 
 #endif

@@ -11,24 +11,24 @@
 #include <csignal>
 #include <cstdlib>
 
-class GeneticAlgorithm {
+class EvolutionEngine {
 public:
     int crossValue;
     float crossProb;
     float mutateProb;
     int eliteVal;
 
-    GeneticAlgorithm(){}
+    EvolutionEngine(){}
     
-    void loadData(SimulationData simulator, Topology network, bool return_history = true) {
+    void loadData(string name, SimulationData simulator, Topology network, bool return_history = true) {
         this->simulator = simulator;
         this->network = network;
         this->return_history = return_history;
         this->population_size = simulator.population_size;
         this->iteration_count = simulator.iteration_count;
         this->population = simulator.population;
-        this->plotData.hash_id = random_string(5);
-        this->plotData.name = "Genetic Algorithm";
+        this->plotData.hash_id = random_string(7);
+        this->plotData.name = name;
         this->plotData.best_fitness = FLT_MAX;
         this->plotData.best_gene = vector<int>(network.num_nodes, -1);
         this->plotData.fitness_history.reserve(iteration_count);
