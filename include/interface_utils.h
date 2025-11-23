@@ -423,8 +423,10 @@ void execute_command(char* input, Topology& network, SimulationData& simulator){
             cout << "Population size mismatch, regenerating population" << endl;
             simulator.population = initial_population(simulator, network);
         }
-        algorithm.loadData(simulator, network);
-        algorithm.run();
+        algorithm = make_unique<GeneticAlgorithm>(); //generalize this
+        algorithm->loadData(simulator, network);
+        algorithm->run();
+
     }
     else if (cmd_key == "about") {
         cout << "Route Optimization Using Tunable Evolution (ROUTE)" << endl;

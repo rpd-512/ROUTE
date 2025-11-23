@@ -7,10 +7,10 @@
 #include "types.h"
 
 #include "debug_utils.h"
-#include "../metaheuristics/geneticAlgorithm.h"
+#include "algorithm_utils.h"
 
 
-GeneticAlgorithm algorithm;
+unique_ptr<EvolutionEngine> algorithm;
 
 Topology loadNodesFromYAML(const string& filename) {
     Topology network;

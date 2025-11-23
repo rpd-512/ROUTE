@@ -1,26 +1,31 @@
-#ifndef GENETIC_ALGORITHM_H
-#define GENETIC_ALGORITHM_H
+#ifndef ALGORITHM_UTILS_H
+#define ALGORITHM_UTILS_H
 
-#include "../include/types.h"
-#include "../include/random_utils.h"
-#include "../include/network_utils.h"
-#include "../include/plotter_utils.h"
+#include "types.h"
+#include "random_utils.h"
+#include "network_utils.h"
+#include "plotter_utils.h"
 #include <indicators/block_progress_bar.hpp>
 #include <indicators/cursor_control.hpp>
 #include <thread>
 #include <csignal>
 #include <cstdlib>
 
+using namespace indicators;
+
 class EvolutionEngine {
 public:
-    int crossValue;
-    float crossProb;
-    float mutateProb;
-    int eliteVal;
-
     EvolutionEngine(){}
     
-    void loadData(string name, SimulationData simulator, Topology network, bool return_history = true) {
+    virtual void setName(const string& algo_name){
+        this->plotData.name = algo_name;
+    }
+
+    virtual void setColor(const string& line_color){
+        this->plotData.color = line_color;
+    }
+
+    void loadData(SimulationData simulator, Topology network, bool return_history = true) {
         this->simulator = simulator;
         this->network = network;
         this->return_history = return_history;
@@ -28,32 +33,19 @@ public:
         this->iteration_count = simulator.iteration_count;
         this->population = simulator.population;
         this->plotData.hash_id = random_string(7);
-        this->plotData.name = name;
         this->plotData.best_fitness = FLT_MAX;
         this->plotData.best_gene = vector<int>(network.num_nodes, -1);
         this->plotData.fitness_history.reserve(iteration_count);
         this->plotData.latency_history.reserve(iteration_count);
         this->plotData.energy_history.reserve(iteration_count);
-        this->plotData.color = "red";
-        crossValue = 3;
-        crossProb = 0.75;
-        mutateProb = 0.5;
-        eliteVal = max(1, this->population_size / 10);
-    }
-
-    void sort_population() {
-        sort(popData.begin(), popData.end(), [](const ChromoInfo& a, const ChromoInfo& b) {
-            return a.fitness < b.fitness;
-        });
     }
 
     void run() {
         indicators::show_console_cursor(false);
-        using namespace indicators;
         BlockProgressBar bar{
             option::BarWidth{40},
             option::ForegroundColor{Color::white},
-            option::PrefixText{"Genetic Algorithm "},
+            option::PrefixText{this->plotData.name + " "},
             option::ShowElapsedTime{true},
             option::Start{"|"},
             option::End{"|"},
@@ -63,61 +55,8 @@ public:
             option::MaxProgress{simulator.iteration_count}
         };
 
+        plotData = algorithm_logic(bar);
 
-
-        for(int u=0;u<population_size;u++){
-            vector<int> valArr = population[u];
-            ChromoInfo valChromo;
-            valChromo.gene = valArr;
-            valChromo.fitness = fitness(valArr, network, simulator);
-            popData.push_back(valChromo);
-        }
-        ChromoInfo bestPop;
-        for(int gen=0;gen<iteration_count+1;gen++){
-            //-----------//
-            bar.set_option(option::PostfixText{
-            std::to_string(gen) + "/" + std::to_string(simulator.iteration_count)
-            });
-            bar.tick();
-            //-----------//
-
-            sort_population();
-            popData = {popData.begin(), popData.begin()+population_size};
-            vector<ChromoInfo> eliteData = {popData.begin(), popData.begin()+eliteVal};
-            bestPop = popData[0];
-            if(bestPop.fitness < plotData.best_fitness){
-                plotData.best_fitness = bestPop.fitness;
-                plotData.best_gene = bestPop.gene;
-                plotData.best_latency = calculateLatency(bestPop.gene, network);
-                plotData.best_energy = calculateEnergyUsage(bestPop.gene, network);
-            }
-            plotData.fitness_history.push_back(plotData.best_fitness);
-            plotData.latency_history.push_back(plotData.best_latency);
-            plotData.energy_history.push_back(plotData.best_energy);
-            //Implement GA Logic Ahead
-            for(int p=0; p<population_size; p++){
-                vector<int>& chromoMain = popData[p].gene;
-                int rand_p =randint(0,population_size-1);
-                vector<int>& chromoRand = popData[rand_p].gene;
-                int crossOverNum = randint(0,population[p].size() - crossValue);
-                //crossover
-                if(uniform(0,1) < crossProb){
-                    swap_ranges(chromoMain.begin() + crossOverNum,
-                            chromoMain.begin() + crossOverNum + crossValue,
-                            chromoRand.begin() + crossOverNum);
-                }
-                for(int g=crossOverNum;g<crossOverNum+crossValue;g++){
-                    if(uniform(0,1)<mutateProb){
-                        int reachable_index = randint(0, network.get_reachable_nodes(g).size()-1);
-                        chromoMain[g] = network.get_reachable_nodes(g)[reachable_index];
-                    }
-                }
-                popData[p].fitness = fitness(chromoMain, network, simulator);
-                //print_vector(chromoMain);
-                //plotConfig(chromoMain, network);
-            }
-            popData.insert(popData.end(),eliteData.begin(),eliteData.end());
-        }
         indicators::show_console_cursor(true);
         plot_container.push_back(plotData);
         cout << "\nBest Fitness: " << plotData.best_fitness << endl;
@@ -142,7 +81,7 @@ public:
         plotEnergy(plotData);
     }
 
-private:
+protected:
     int population_size;
     int iteration_count;
     vector<vector<int>> population;
@@ -151,6 +90,13 @@ private:
     SimulationData simulator;
     vector<ChromoInfo> popData;
     bool return_history;
+
+    void sort_population() {
+        sort(popData.begin(), popData.end(), [](const ChromoInfo& a, const ChromoInfo& b) {
+            return a.fitness < b.fitness;
+        });
+    }
+
 
     void repair_chromosome(vector<int>& chromosome, const Topology& network) {
         // Fix invalid nodes first
@@ -163,6 +109,12 @@ private:
         while (hasCycle(chromosome, network)) {
             break_cycle(chromosome, network);
         }
+    }
+
+    virtual PlotterData algorithm_logic(indicators::BlockProgressBar& bar){
+        PlotterData default_return;
+        cout << "Please create the an overriding logic before executing the algorithm\n";
+        return default_return;
     }
 };
 
