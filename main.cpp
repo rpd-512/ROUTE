@@ -8,8 +8,6 @@
 
 #include "include/debug_utils.h"
 
-#include "metaheuristics/geneticAlgorithm.h"
-
 int main(int argc, char* argv[]) {
     Topology myNetwork;
     SimulationData simulator;

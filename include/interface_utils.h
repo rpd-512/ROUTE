@@ -5,13 +5,12 @@
 #include <readline/history.h>
 #include <iostream>
 #include <string>
-#include <vector>
 #include <map>
 #include <algorithm>
 #include <filesystem>
 #include <cstring>
 #include "types.h"
-#include "../metaheuristics/geneticAlgorithm.h"
+#include "../plugins/GeneticAlgorithm/geneticAlgorithm.h"
 
 namespace fs = filesystem;
 

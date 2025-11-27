@@ -4,6 +4,8 @@
 #include <cmath>
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -36,6 +38,12 @@ typedef struct SimulationData{
     int iteration_count;
     vector<vector<int>> population;
 } SimulationData;
+
+struct ConfigInfo{
+    PlotterData plot_info;
+    SimulationData sim_info;
+    string dataset_info;
+};
 
 
 class Node {
