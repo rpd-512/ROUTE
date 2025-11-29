@@ -1,22 +1,25 @@
 # ==== USER SETTINGS ====
-SRC  = geneticAlgorithm.cpp   # <-- your .cpp file
-OUT  = genetic.so             # <-- your .so output file
+SRC  = geneticAlgorithm.cpp
+OUT  = genetic.so
+ROUTE_INC = ../../include         # <--- VERY IMPORTANT
 # ========================
 
 CXX = g++
-CXXFLAGS = -fPIC -O2 -Wall
+CXXFLAGS = -fPIC -O2 -Wall -fvisibility=default
 
-PY_INC = -I/usr/include/python3.10 \
-         -I/usr/include/python3.10 \
-         -I$(HOME)/.local/lib/python3.10/site-packages/numpy/_core/include
+INCLUDES = \
+    -I$(ROUTE_INC) \
+    -I/usr/include/python3.10 \
+    -I$(HOME)/.local/lib/python3.10/site-packages/numpy/_core/include
+
+LIBS = -lyaml-cpp -lpython3.10
 
 all: $(OUT)
 
 $(OUT): $(SRC)
-	$(CXX) $(CXXFLAGS) $(PY_INC) -shared $< -o $@
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -shared $(SRC) -o $(OUT) $(LIBS)
 
 clean:
 	rm -f $(OUT)
 
 .PHONY: all clean
-

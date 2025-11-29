@@ -9,8 +9,11 @@
 #include "debug_utils.h"
 #include "algorithm_utils.h"
 
+#include <dlfcn.h>
 
-unique_ptr<EvolutionEngine> algorithm;
+
+EvolutionEngine* algorithm;
+bool algorithm_loaded = false;
 
 Topology loadNodesFromYAML(const string& filename) {
     Topology network;
@@ -74,10 +77,26 @@ Topology loadNodesFromYAML(const string& filename) {
     return network;
 }
 
-void loadAlgorithmFromFile(const string& filename) {
-    // Placeholder for algorithm loading logic
-    // This function should load and initialize the algorithm from the specified file
-    cout << "Algorithm loading from file is not yet implemented." << endl;
+EvolutionEngine* loadAlgorithmFromFile(const std::string& filename) {
+    void* handle = dlopen(filename.c_str(), RTLD_NOW);
+    if (!handle) {
+        std::cerr << "dlopen error: " << dlerror() << std::endl;
+        return nullptr;
+    }
+
+    using CreateFn = EvolutionEngine* (*)();
+    CreateFn createFn = (CreateFn)dlsym(handle, "create_algorithm");
+    if (!createFn) {
+        std::cerr << "dlsym error: " << dlerror() << std::endl;
+        dlclose(handle);
+        return nullptr;
+    }
+
+    EvolutionEngine* alg = createFn();
+    
+    algorithm_loaded = true;
+    
+    return alg;
 }
 
 #endif

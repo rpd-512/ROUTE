@@ -6,11 +6,10 @@
 #include <iostream>
 #include <string>
 #include <map>
-#include <algorithm>
 #include <filesystem>
 #include <cstring>
 #include "types.h"
-#include "../plugins/GeneticAlgorithm/geneticAlgorithm.h"
+
 
 namespace fs = filesystem;
 
@@ -23,6 +22,11 @@ void clear_screen() {
         (void)ret;  // explicitly mark unused
 }
 
+PlotterData EvolutionEngine::algorithm_logic(indicators::BlockProgressBar& bar) {
+    PlotterData default_return;
+    std::cout << "Please create an overriding logic before executing the algorithm\n";
+    return default_return;
+}
 
 vector<string> list_dir(const string& typed_path_str, const string& ext_filter = "") {
     vector<string> results;
@@ -218,8 +222,9 @@ inline char** completer(const char* text, int start, int end) {
     }
     else if (!key.empty() && key == "load.algorithm") {
         string typed = text ? text : "";
-        options = list_dir(typed, ".so");
-        options = list_dir(typed, ".dll");
+        options = {};
+        for (auto& v : list_dir(typed, ".so"))  options.push_back(v);
+        for (auto& v : list_dir(typed, ".dll")) options.push_back(v);
     }
     else if (!key.empty() && (key.find("compare.") != string::npos || key == "compare") && tokens.size() < 4) {
         string typed = text ? text : "";
@@ -366,8 +371,7 @@ void execute_command(char* input, Topology& network, SimulationData& simulator){
     else if (cmd_key.find("load.algorithm") != string::npos) {
         cout << "Loading algorithm from " << tokens[2] << endl;
         try {
-            //algorithm = loadAlgorithmFromFile(tokens[2]);
-            loadAlgorithmFromFile(tokens[2]);
+            algorithm = loadAlgorithmFromFile(tokens[2]);
         }
         catch (const exception& e) {
             cerr << "Error loading algorithm: " << e.what() << endl;
@@ -410,6 +414,10 @@ void execute_command(char* input, Topology& network, SimulationData& simulator){
         network.save_network(tokens[2]);
     }
     else if (cmd_key == "simulate"){
+        if (!algorithm_loaded) {
+            cout << "Please load an algorithm before simulating" << endl;
+            return;
+        }
         if (network.node_list.empty()) {
             cout << "Please load topology before using this command" << endl;
             return;
@@ -422,7 +430,6 @@ void execute_command(char* input, Topology& network, SimulationData& simulator){
             cout << "Population size mismatch, regenerating population" << endl;
             simulator.population = initial_population(simulator, network);
         }
-        algorithm = make_unique<GeneticAlgorithm>(); //generalize this
         algorithm->loadData(simulator, network);
         algorithm->run();
 

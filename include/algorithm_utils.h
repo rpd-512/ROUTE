@@ -25,6 +25,8 @@ public:
         this->plotData.color = line_color;
     }
 
+    virtual ~EvolutionEngine() {}
+
     void loadData(SimulationData simulator, Topology network, bool return_history = true) {
         this->simulator = simulator;
         this->network = network;
@@ -54,9 +56,7 @@ public:
                 std::vector<FontStyle>{FontStyle::bold}},
             option::MaxProgress{simulator.iteration_count}
         };
-
         plotData = algorithm_logic(bar);
-
         indicators::show_console_cursor(true);
         plot_container.push_back(plotData);
         cout << "\nBest Fitness: " << plotData.best_fitness << endl;
@@ -111,11 +111,7 @@ protected:
         }
     }
 
-    virtual PlotterData algorithm_logic(indicators::BlockProgressBar& bar){
-        PlotterData default_return;
-        cout << "Please create the an overriding logic before executing the algorithm\n";
-        return default_return;
-    }
+    virtual PlotterData algorithm_logic(indicators::BlockProgressBar& bar);
 };
 
 #endif
