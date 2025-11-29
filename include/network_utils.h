@@ -34,36 +34,58 @@ double calculateLatency(const vector<int>& chromosome, const Topology& network) 
     double total_latency = 0.0;
     int sink_packets = 0;
     int total_packets = network.total_packet_count;
-    if(hasCycle(chromosome, network)){
+
+    if (hasCycle(chromosome, network)) {
         return DBL_MAX;
     }
+
     vector<int> held_packets(chromosome.size());
     for (size_t i = 0; i < chromosome.size(); i++) {
-        held_packets[i]= network.node_list[i].packet_size;
+        held_packets[i] = network.node_list[i].packet_size;
     }
-    while(sink_packets != total_packets){
-        //cout << "Latency Calc" << endl;
+
+    while (sink_packets != total_packets) {
+
+        bool progress = false;   // <-- detect deadlock
+
         for (size_t i = 0; i < chromosome.size(); i++) {
             int src = i;
             int dst = chromosome[i];
+
             if (held_packets[src] == 0) continue;
+
             const Node& source = network.node_list[src];
             const Node& target = network.node_list[dst];
+
             double distance = source.distanceTo(target);
             double propagation_delay = distance / network.propagation_speed;
-            double transmission_delay = (double)held_packets[src] / min(source.bandwidth, target.bandwidth);
+            double transmission_delay =
+                (double)held_packets[src] / min(source.bandwidth, target.bandwidth);
+
             total_latency += propagation_delay + transmission_delay;
-            
+
+            int packets = held_packets[src];
+
+            if (packets > 0) progress = true;   // <-- packets moved this iteration
+
             if (target.isSink) {
-                sink_packets += held_packets[src];
+                sink_packets += packets;
             } else {
-                held_packets[dst] += held_packets[src];
+                held_packets[dst] += packets;
             }
+
             held_packets[src] = 0;
         }
+
+        // 🚨 No packets moved → deadlock → no route to sink
+        if (!progress) {
+            return DBL_MAX;
+        }
     }
+
     return total_latency;
 }
+
 
 double calculateEnergyUsage(const vector<int>& chromosome, Topology network) {
     double total_energy_used = 0.0;
