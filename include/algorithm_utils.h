@@ -15,8 +15,10 @@ using namespace indicators;
 
 class EvolutionEngine {
 public:
+    PlotterData plotData;
+
     EvolutionEngine(){}
-    
+
     virtual void setName(const string& algo_name){
         this->plotData.name = algo_name;
     }
@@ -27,7 +29,7 @@ public:
 
     virtual ~EvolutionEngine() {}
 
-    void loadData(SimulationData simulator, Topology network, bool return_history = true) {
+    void loadData(SimulationData& simulator, Topology network, bool return_history = true) {
         this->simulator = simulator;
         this->network = network;
         this->return_history = return_history;
@@ -85,14 +87,12 @@ protected:
     int population_size;
     int iteration_count;
     vector<vector<int>> population;
-    PlotterData plotData;
     Topology network;
     SimulationData simulator;
-    vector<ChromoInfo> popData;
     bool return_history;
 
-    void sort_population() {
-        sort(popData.begin(), popData.end(), [](const ChromoInfo& a, const ChromoInfo& b) {
+    void sort_population(vector<ChromoInfo>* popData) {
+        sort(popData->begin(), popData->end(), [](const ChromoInfo& a, const ChromoInfo& b) {
             return a.fitness < b.fitness;
         });
     }

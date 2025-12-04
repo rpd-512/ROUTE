@@ -1,0 +1,203 @@
+nodes:
+  - id: 167
+    pos: [-0.570453, -8.28148]
+    energy: 44.5896
+    type: sensor
+    range: 4.34808
+    packets: 21
+    tx_depl: 0.153104
+    rx_depl: 0.0390353
+    bandwidth: 65.2039
+  - id: 153
+    pos: [-0.203571, -6.94274]
+    energy: 59.0699
+    type: sensor
+    range: 3.37932
+    packets: 27
+    tx_depl: 0.0286917
+    rx_depl: 0.0295532
+    bandwidth: 37.149
+  - id: 81
+    pos: [-0.557366, -8.87397]
+    energy: 96.4499
+    type: sensor
+    range: 2.23009
+    packets: 25
+    tx_depl: 0.0229215
+    rx_depl: 0.127859
+    bandwidth: 95.6636
+  - id: 146
+    pos: [-1.10535, -7.96484]
+    energy: 83.8809
+    type: sensor
+    range: 1.8088
+    packets: 1
+    tx_depl: 0.0938832
+    rx_depl: 0.160653
+    bandwidth: 84.7852
+  - id: 140
+    pos: [1.67227, -7.39305]
+    energy: 30.6894
+    type: sensor
+    range: 1.27649
+    packets: 32
+    tx_depl: 0.181392
+    rx_depl: 0.0190353
+    bandwidth: 11.5752
+  - id: 110
+    pos: [-0.594959, -9.09928]
+    energy: 88.5265
+    type: sensor
+    range: 2.82417
+    packets: 3
+    tx_depl: 0.154874
+    rx_depl: 0.151281
+    bandwidth: 16.4927
+  - id: 64
+    pos: [0.834036, -7.81313]
+    energy: 83.8126
+    type: sensor
+    range: 1.06549
+    packets: 31
+    tx_depl: 0.169103
+    rx_depl: 0.0839684
+    bandwidth: 39.7402
+  - id: 79
+    pos: [-0.21402, -6.23203]
+    energy: 96.7204
+    type: sensor
+    range: 1.4945
+    packets: 19
+    tx_depl: 0.195628
+    rx_depl: 0.0309392
+    bandwidth: 40.6993
+  - id: 197
+    pos: [-1.90831, -6.66867]
+    energy: 94.1061
+    type: sensor
+    range: 2.75214
+    packets: 22
+    tx_depl: 0.147563
+    rx_depl: 0.0565639
+    bandwidth: 57.5369
+  - id: 199
+    pos: [-1.25309, -8.43076]
+    energy: 96.0744
+    type: sensor
+    range: 2.11927
+    packets: 17
+    tx_depl: 0.0329473
+    rx_depl: 0.0901228
+    bandwidth: 43.83
+  - id: 34
+    pos: [-3.03463, -8.90348]
+    energy: 77.2788
+    type: sensor
+    range: 1.61856
+    packets: 27
+    tx_depl: 0.183912
+    rx_depl: 0.143555
+    bandwidth: 61.3978
+  - id: 159
+    pos: [2.46867, -6.60008]
+    energy: 71.1425
+    type: sensor
+    range: 1.56662
+    packets: 27
+    tx_depl: 0.178991
+    rx_depl: 0.0196557
+    bandwidth: 61.9826
+  - id: 198
+    pos: [2.03884, -7.34846]
+    energy: 38.9693
+    type: sensor
+    range: 2.21287
+    packets: 4
+    tx_depl: 0.191898
+    rx_depl: 0.16771
+    bandwidth: 50.3028
+  - id: 199
+    pos: [2.79941, -7.19757]
+    energy: 69.1951
+    type: sensor
+    range: 2.15015
+    packets: 27
+    tx_depl: 0.0719416
+    rx_depl: 0.0595198
+    bandwidth: 39.6027
+  - id: 111
+    pos: [-2.8336, -7.25023]
+    energy: 51.7897
+    type: sensor
+    range: 2.329
+    packets: 24
+    tx_depl: 0.0537117
+    rx_depl: 0.0123894
+    bandwidth: 30.1948
+  - id: 176
+    pos: [-2.34001, -8.54212]
+    energy: 98.9966
+    type: sensor
+    range: 1.15698
+    packets: 5
+    tx_depl: 0.191944
+    rx_depl: 0.121601
+    bandwidth: 73.2852
+  - id: 26
+    pos: [3.52885, -6.37438]
+    energy: 61.7619
+    type: sensor
+    range: 3.26426
+    packets: 9
+    tx_depl: 0.161332
+    rx_depl: 0.103601
+    bandwidth: 19.4316
+  - id: 17
+    pos: [-4.7708, -8.58616]
+    energy: 45.781
+    type: sensor
+    range: 2.41602
+    packets: 23
+    tx_depl: 0.148542
+    rx_depl: 0.0580451
+    bandwidth: 52.7543
+  - id: 14
+    pos: [-2.44596, -5.24567]
+    energy: 91.3161
+    type: sensor
+    range: 2.95044
+    packets: 12
+    tx_depl: 0.118726
+    rx_depl: 0.122981
+    bandwidth: 80.732
+  - id: 128
+    pos: [3.6099, -6.92486]
+    energy: 51.9593
+    type: sensor
+    range: 0.969822
+    packets: 14
+    tx_depl: 0.104592
+    rx_depl: 0.188143
+    bandwidth: 17.588
+  - id: 142
+    pos: [2.32451, -4.86742]
+    energy: 9999
+    type: sink
+    bandwidth: 621.564
+  - id: 181
+    pos: [0.296689, -5.83516]
+    energy: 9999
+    type: sink
+    bandwidth: 464.224
+  - id: 138
+    pos: [-0.838679, -7.7755]
+    energy: 9999
+    type: sink
+    bandwidth: 31.8274
+  - id: 102
+    pos: [-0.224081, -7.41695]
+    energy: 9999
+    type: sink
+    bandwidth: 712.381
+environment:
+  - propagation_speed: 3e+08

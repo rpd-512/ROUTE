@@ -120,7 +120,7 @@ void show_help() {
     cout << "plot                    - Plot simulation data\n";
     cout << "  topology              - Plot network topology\n";
     cout << "  config                - Plot network configuration\n";
-    cout << "  convergence           - Plot convergence graph           (NOT IMPLEMENTED)\n";
+    cout << "  convergence           - Plot convergence graph\n";
     cout << "\n";
 
     cout << "generate                - Generate items\n";

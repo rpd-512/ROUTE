@@ -5,10 +5,6 @@
 
 class GeneticAlgorithm : public EvolutionEngine {
 public:
-    int crossValue = 3;
-    float crossProb = 0.75;
-    float mutateProb = 0.5;
-    int eliteVal = max(1, this->population_size / 10);
 
     //Existing variables in
     //  this->simulator
@@ -19,7 +15,7 @@ public:
 
     GeneticAlgorithm(){
         this->setName("Genetic Algorithm");
-        this->setColor("green");
+        this->setColor("red");
     }
     
 protected:

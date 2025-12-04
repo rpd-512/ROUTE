@@ -1,7 +1,12 @@
 #include "geneticAlgorithm.h"
 
 PlotterData GeneticAlgorithm::algorithm_logic(indicators::BlockProgressBar& bar) {
-    cout << "Running Genetic Algorithm..." << endl;
+    int eliteVal = max(1, this->population_size / 10);
+    int crossValue = 3;
+    float crossProb = 0.75;
+    float mutateProb = 0.5;
+    vector<ChromoInfo> popData;
+
     for(int u=0;u<population_size;u++){
         vector<int> valArr = population[u];
         ChromoInfo valChromo;
@@ -10,6 +15,7 @@ PlotterData GeneticAlgorithm::algorithm_logic(indicators::BlockProgressBar& bar)
         popData.push_back(valChromo);
     }
     ChromoInfo bestPop;
+    vector<ChromoInfo> eliteData;
     for(int gen=0;gen<iteration_count+1;gen++){
         //-----------//
         bar.set_option(option::PostfixText{
@@ -17,10 +23,10 @@ PlotterData GeneticAlgorithm::algorithm_logic(indicators::BlockProgressBar& bar)
         });
         bar.tick();
         //-----------//
-
-        sort_population();
+        sort_population(&popData);
         popData = {popData.begin(), popData.begin()+population_size};
-        vector<ChromoInfo> eliteData = {popData.begin(), popData.begin()+eliteVal};
+        eliteData.assign(popData.begin(), popData.begin() + eliteVal);
+
         bestPop = popData[0];
         if(bestPop.fitness < plotData.best_fitness){
             plotData.best_fitness = bestPop.fitness;

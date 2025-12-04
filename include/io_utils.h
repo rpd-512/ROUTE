@@ -99,4 +99,6 @@ EvolutionEngine* loadAlgorithmFromFile(const std::string& filename) {
     return alg;
 }
 
+vector<EvolutionEngine*> algorithm_container;
+
 #endif

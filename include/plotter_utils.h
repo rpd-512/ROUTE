@@ -81,7 +81,7 @@ void plotNodes(const Topology& network) {
     plt::show();
 }
 
-void plotConfig(const vector<int>& chromosome, const Topology& network){
+void plotConfig(const vector<int>& chromosome, const Topology& network, bool save_fig=false, const string& filename="network_config.png") {
     for (const auto& node : network.node_list) {
 
         vector<double> x{node.position.x};
@@ -126,8 +126,11 @@ void plotConfig(const vector<int>& chromosome, const Topology& network){
 
     plt::xlim(minX - 10, maxX + 10);
     plt::ylim(minY - 10, maxY + 10);
-
-    plt::show();
+    
+    if(save_fig)
+        plt::save(filename);
+    else
+        plt::show();
 }
 
 void plotFitness(const PlotterData& data) {
